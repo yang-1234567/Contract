@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <title>Login/Sign up</title>
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body>
+
+<div class="cont_principal">
+    <div class="cont_center">
+        <div class="cont_login">
+            <div class="cont_info_log_sign_up">
+                <div class="col_md_login">
+                    <div class="cont_ba_opcitiy">
+                        <h2>登录</h2>
+                        <p>输入你的用户名和密码</p>
+                        <button class="btn_login" onClick="cambiar_login()">登录</button>
+                    </div>
+                </div>
+                <div class="col_md_sign_up">
+                    <div class="cont_ba_opcitiy">
+                        <h2>注册</h2>
+                        <p>创建一个新账户</p>
+                        <button class="btn_sign_up" onClick="cambiar_sign_up()">注册</button>
+                    </div>
+                </div>
+            </div>
+            <div class="cont_back_info">
+                <div class="cont_img_back_grey"> <img src="../images/background.jpg" alt="" /> </div>
+            </div>
+            <div class="cont_forms" >
+                <div class="cont_img_back_"> <img src="../images/background.jpg" alt="" /> </div>
+                <div class="cont_form_login"> <a href="#" onClick="ocultar_login_sign_up()" ><i class="material-icons">&#xE5C4;</i></a>
+                    <h2 id="title">登录</h2>
+                    <input id="phoneNumber1" type="text" placeholder="用户名" onblur="validateUserForm(1)"/>
+                    <p id="hintPhone1" class="hintLogin"></p>
+                    <input id="password1" type="password" placeholder="密码" onblur="validatePasswordForm(1)"/>
+                    <p id="hintPassword1" class="hintLogin"></p>
+                    <button class="btn_login" onClick="login()">登录</button>
+                </div>
+                <div class="cont_form_sign_up"> <a href="#" onClick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                    <h2>注册</h2>
+                    <input id="phoneNumber2" type="text" placeholder="用户名" onblur="validateUserForm(2)"/>
+                    <p id="hintPhone2" class="hintSignUp"></p>
+                    <!--          <input id="username" type="text" placeholder="Username" />-->
+                    <!--          <p id="hintUsername" class="hint"></p>-->
+                    <input id="password2" type="password" placeholder="密码" onblur="validatePasswordForm(2)"/>
+                    <p id="hintPassword2" class="hintSignUp"></p>
+                    <input id="passwordCon" type="password" placeholder="确认密码" onblur="validateConfirmForm()"/>
+                    <p id="hintPasswordCon" class="hintSignUp"></p>
+                    <button class="btn_sign_up" onClick="signUp()">注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/cookie.js"></script>
+<script src="../assets/layer/layer.js" type="text/javascript"></script>
+<script src="../js/login_signup.js"></script>
+
+</body>
+</html>

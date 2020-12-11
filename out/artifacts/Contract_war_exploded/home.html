@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <base href="http://localhost:8888/Contract/">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/css/ace.min.css"/>
+    <link rel="stylesheet" href="assets/css/ace-rtl.min.css"/>
+    <link rel="stylesheet" href="assets/css/ace-skins.min.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <title>无标题文档</title>
+</head>
+<!--[if lte IE 8]>
+<link rel="stylesheet" href="assets/css/ace-ie.min.css"/>
+<![endif]-->
+<script src="assets/js/ace-extra.min.js"></script>
+<!--[if lt IE 9]>
+<script src="assets/js/html5shiv.js"></script>
+<script src="assets/js/respond.min.js"></script>
+<![endif]-->
+<!--[if !IE]> -->
+<script src="assets/js/jquery.min.js"></script>
+<!-- <![endif]-->
+<style type="text/css">
+    html {
+        overflow-x: hidden;
+    }
+</style>
+<body>
+<div class="page-content" id="tt">
+    <div class="page-header">
+        <h1 id="hint"><small></small></h1>
+    </div><!-- /.page-header -->
+
+</div>
+</body>
+<script src="js/cookie.js"></script>
+<script type="text/javascript">
+    if (getCookie("rights") === 'none') {
+        document.getElementById("hint").innerText="您是新用户，没有合同操作权限请等待管理员为您分配权限";
+    }else{
+        document.getElementById("hint").innerText="欢迎您 "+getCookie("curUsername")+" :)";
+    }
+</script>
+</html>

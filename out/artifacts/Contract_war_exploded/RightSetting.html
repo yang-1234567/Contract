@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <base href="http://localhost:8888/Contract/">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css"/>
+    <![endif]-->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/css/ace.min.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <title>权限设置</title>
+</head>
+
+<body>
+<div class="page-content">
+    <div class="Manager_style">
+        <span class="title_name">角色权限设置</span>
+        <div class=" center"><a href="javascript:history.go(-1)" class="btn btn-primary">返回</a></div>
+        <div class="Competence_style ">
+            <div class="hdj_Competence Competence_info clearfix">
+                <ul class="Competence_list clearfix">
+                    <li class="name">合同流程</li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">起草合同</span></label></li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">会签合同</span></label></li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">定稿合同</span></label></li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">审批合同</span></label></li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">签订合同</span></label></li>
+                </ul>
+                <ul class="Competence_list clearfix">
+                    <li class="name">查询统计</li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">流程查询</span></label></li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">我的发起</span></label></li>
+                </ul>
+                <ul class="Competence_list clearfix">
+                    <li class="name">数据管理</li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">合同信息</span></label></li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">客户信息</span></label></li>
+                </ul>
+                <ul class="Competence_list clearfix">
+                    <li class="name">系统管理</li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">用户管理</span></label></li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">角色管理</span></label></li>
+                    <li><label><input name="form-field-checkbox" type="checkbox" class="ace"><span
+                            class="lbl">分配合同</span></label></li>
+                </ul>
+
+            </div>
+
+        </div>
+        <div class=" center"><a class="btn btn-primary btn_submit">提交</a></div>
+    </div>
+</div>
+</body>
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/cookie.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        let js_receive = {
+            "right": "0 1 2 3 4"
+        }
+
+        let rights = js_receive.right.split(" ");
+        for (let i = 0; i < rights.length; i++) {
+            $("input").eq(i).prop("checked", true);
+        }
+
+        $(document).on('click', '.btn_submit', function () {
+            let rights = "";
+            for (let i = 0; i < 12; i++) {
+                if ($("input").eq(i).prop('checked')) {
+                    rights += (i+" ");
+                }
+            }
+            alert(rights);
+            history.go(-1);
+        })
+
+    })
+
+</script>
+</html>

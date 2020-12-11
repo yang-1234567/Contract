@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../assets/css/ace.min.css"/>
+    <link rel="stylesheet" href="../css/style.css"/>
+    <link rel="">
+</head>
+<body>
+<div class="page-content">
+    <div class="Inquiry_info Order_Details_style">
+        <div>
+            <ul class="clearfix">
+                <li><label class="label_name">合同名称</label><span class="label_content"></span></li>
+                <li><label class="label_name">客户</label><span class="label_content"></span></li>
+                <li><label class="label_name">开始时间</label><span class="label_content"></span></li>
+                <li><label class="label_name">结束时间</label><span class="label_content"></span></li>
+                <li><label class="label_name">附件</label><span><a href="#"></a></span></li>
+            </ul>
+        </div>
+        <div class="Tips_content">
+            <h3>合同内容：</h3>
+            <p>信息内容</p>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../assets/js/jquery.min.js"></script>
+<!-- <![endif]-->
+<!--[if !IE]> -->
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='../assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+</script>
+<script src="../js/cookie.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //从服务器请求合同信息
+
+        //接收
+        let js_receive = {
+            "name": getCookie("contractId"),
+            "customer": "张三",
+            "startTime": "2020-12-01",
+            "endTime": "2020-12-10",
+            "fileName": "合同.pdf",
+            "content": "这是合同内容"
+        }
+
+        $("span:eq(0)").html(js_receive.name);
+        $("span:eq(1)").html(js_receive.customer);
+        $("span:eq(2)").html(js_receive.startTime);
+        $("span:eq(3)").html(js_receive.endTime);
+        $("span:eq(4)").html(js_receive.fileName);
+        $("p:eq(0)").html(js_receive.content);
+    })
+</script>
+</html>
