@@ -49,4 +49,13 @@
         <url-pattern>/draftServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SearchAssignServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchAssignServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchAssignServlet</servlet-name>
+        <url-pattern>/searchAssignServlet</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -121,16 +121,16 @@
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
-                    // let js_receive = JSON.parse(this.responseText);
+                    let js_receive = JSON.parse(this.responseText);
 
-                    let js_receive = {
-                        "ids": "1 2 3 4 5",
-                        "names": "合同1 合同2 合同3 合同4 合同5",
-                        "times": "2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10",
-                        "countersign":"张三 李四 王五 赵六 钱七",
-                        "approve":"张三 李四 王五 钱七",
-                        "sign":"张三 李四 赵六 钱七",
-                    };
+                    //let js_receive = {
+                     //   "ids": "1 2 3 4 5",
+                    //  "names": "合同1 合同2 合同3 合同4 合同5",
+                    //     "times": "2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10",
+                    //     "countersign":"张三 李四 王五 赵六 钱七",
+                    //     "approve":"张三 李四 王五 钱七",
+                    //       "sign":"张三 李四 赵六 钱七",
+                    // };
                     let ids = js_receive.ids.split(" ");
                     let names = js_receive.names.split(" ");
                     let times = js_receive.times.split(" ");
@@ -149,7 +149,7 @@
                     }
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/draftServlet", true);
+            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
             xhttp.send(JSON.stringify(js_send));
         }
 

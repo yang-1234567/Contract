@@ -17,7 +17,8 @@
 
 <body>
 <div class="page-content">
-    <form action="http://localhost:8888/Contract/fileUploadServlet" method="post" enctype="multipart/form-data" onsubmit="return click1(this)">
+    <form action="http://localhost:8888/Contract/fileUploadServlet" method="post" enctype="multipart/form-data" onsubmit="return click1(this)" id="form2">
+        <input type="hidden" name = "username" value=""/>
         <div class="Manager_style">
             <span class="title_name">起草合同</span>
 
@@ -44,7 +45,7 @@
             </div>
         </div>
         <div class="btn_operating">
-            <input type="submit" class = "btn btn-primary"  value="提交" id = "submit"/>
+            <input type="submit" class = "btn btn-primary"  value="提交"/>
             <button id="reset" class="btn" type="button">重置</button>
         </div>
     </form>
@@ -53,6 +54,7 @@
 <script src="assets/layer/layer.js" type="text/javascript"></script>
 <script src="assets/laydate/laydate.js" type="text/javascript"></script>
 <script src="js/cookie.js" type="text/javascript"></script>
+<script src="assets/js/jquery-form.js" type="text/javascript"></script>
 
 <script>
     laydate({
@@ -68,6 +70,20 @@
         istime: false,
         istoday: false,
     });
+
+    function click1(form) {
+        if (form.contract_name.value == ""){
+            layer.alert("请输入合同名称");
+            return  false;
+        } else if (form.customer.value == ""){
+            layer.alert("请输入合同名称");
+            return  false;
+        }
+
+        $("input:eq(0)").val(getCookie("curUsername"));
+       return true;
+    }
+
     /***判断用户添加文本**/
     $(document).ready(function () {
 
@@ -135,17 +151,7 @@
             }
         });
 
-        function click1(form) {
-           if (form.conteact_num.value == ""){
-               layer.alert("请输入合同名称");
-               return  false;
-           } else if (form.conteact_num.value == ""){
-               layer.alert("请输入合同名称");
-               return  false;
-           }
 
-            alert("到这了");
-        }
 
         $("#reset").click(function () {
 

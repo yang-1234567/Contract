@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class FileUploadServlet extends HttpServlet {
@@ -34,22 +35,19 @@ public class FileUploadServlet extends HttpServlet {
                 for (FileItem fileItem : list) {
                     if (fileItem.isFormField()){//普通表单
 
-                        System.out.println("表单项的name值" + fileItem.getFieldName());
-                        System.out.println("表单项的value值" + fileItem.getString("UTF-8"));
                         jsonObject.put(fileItem.getFieldName(),fileItem.getString("UTF-8"));
 
                     } else {//文件表单
-                        System.out.println("表单项的name值" + fileItem.getFieldName());
-                        System.out.println("上传的文件名" + fileItem.getName());
 
-
-                        fileItem.write(new File("E:\\idea\\workspace\\Contract\\web\\upload\\" + fileItem.getName()));
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            resp.setCharacterEncoding("UTF-8");
+            PrintWriter writer = resp.getWriter();
+            writer.write("起草成功");
         }
     }
 }
