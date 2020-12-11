@@ -90,8 +90,8 @@
                 const customerName = $("input:eq(1)").val();
                 const startTime = $("input:eq(2)").val();
                 const endTime = $("input:eq(3)").val();
-                const tmp = $("input:eq(4)").attr("name");
-                const contractFile = tmp;
+                const tmp = $("input:eq(4)").val();
+                const contractFile = tmp.substring(tmp.lastIndexOf("\\") + 1);
                 const contractContent = $("textarea:eq(0)").val();
 
                 if (startTime >= endTime) {
