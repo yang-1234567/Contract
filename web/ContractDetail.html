@@ -36,23 +36,34 @@
 <script type="text/javascript">
     $(document).ready(function () {
         //从服务器请求合同信息
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let js_receive = JSON.parse(this.responseText);
+                if (js_receive.result === '1') {
+                    let js_receive = {
+                        "name": getCookie("contractId"),
+                        "customer": "张三",
+                        "startTime": "2020-12-01",
+                        "endTime": "2020-12-10",
+                        "fileName": "合同.pdf",
+                        "content": "这是合同内容"
+                    }
 
-        //接收
-        let js_receive = {
-            "name": getCookie("contractId"),
-            "customer": "张三",
-            "startTime": "2020-12-01",
-            "endTime": "2020-12-10",
-            "fileName": "合同.pdf",
-            "content": "这是合同内容"
-        }
+                    $("span:eq(0)").html(js_receive.name);
+                    $("span:eq(1)").html(js_receive.customer);
+                    $("span:eq(2)").html(js_receive.startTime);
+                    $("span:eq(3)").html(js_receive.endTime);
+                    $("span:eq(4)").html(js_receive.fileName);
+                    $("p:eq(0)").html(js_receive.content);
+                } else {
+                    return false;
+                }
+            }
+        };
+        xhttp.open("POST", "http://localhost:8888/Contract/draftServlet", true);
+        xhttp.send('{"contractId":'+getCookie("contractId")+'}');
 
-        $("span:eq(0)").html(js_receive.name);
-        $("span:eq(1)").html(js_receive.customer);
-        $("span:eq(2)").html(js_receive.startTime);
-        $("span:eq(3)").html(js_receive.endTime);
-        $("span:eq(4)").html(js_receive.fileName);
-        $("p:eq(0)").html(js_receive.content);
     })
 </script>
 </html>
