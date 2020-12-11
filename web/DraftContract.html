@@ -91,6 +91,7 @@
                     return;
                 }
                 let js_send={
+                    "username":getCookie("curUsername"),
                     "contractName":contractName,
                     "customerName":customerName,
                     "startTime":startTime,
@@ -98,6 +99,23 @@
                     "contractFile":contractFile,
                     "contractContent":contractContent
                 }
+
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        let js_receive = JSON.parse(this.responseText);
+                        if (js_receive.result === 'true') {
+                            layer.alert("起草成功");
+                            return true;
+                        } else {
+                            layer.alert("起草失败");
+                            return false;
+                        }
+                    }
+                };
+                xhttp.open("POST", "", true);
+                xhttp.send(JSON.stringify(js_send));
+
             }
         });
 
