@@ -17,22 +17,22 @@
 
 <body>
 <div class="page-content">
-    <form action="http://localhost:8888/Contract/fileUploadServlet" method="post" enctype="multipart/form-data">
+    <form action="http://localhost:8888/Contract/fileUploadServlet" method="post" enctype="multipart/form-data" onsubmit=return click1(this)>
         <div class="Manager_style">
             <span class="title_name">起草合同</span>
 
             <div class="project_style">
                 <ul class="Add_Manager_style clearfix">
 
-                    <li><label class="label_name">合同名称</label><input name="合同名称" type="text" class="text"
+                    <li><label class="label_name">合同名称</label><input name="contract_name" type="text" class="text"
                                                                      style=" width:200px; "/></li>
-                    <li><label class="label_name">客户</label><input name="客户" type="text" class="text"
+                    <li><label class="label_name">客户</label><input name="customer" type="text" class="text"
                                                                    style=" width:200px; "/></li>
-                    <li><label class="label_name">开始时间</label> <input name="开始时间" class="inline laydate-icon" id="start"
+                    <li><label class="label_name">开始时间</label> <input name="starttime" class="inline laydate-icon" id="start"
                                                                       style="width:200px; margin-left:10px"/></li>
-                    <li><label class="label_name">结束时间</label><input name="结束时间" class="inline laydate-icon" id="time1"
+                    <li><label class="label_name">结束时间</label><input name="endtime" class="inline laydate-icon" id="time1"
                                                                      style="width:200px; margin-left:10px"/></li>
-                    <li><label class="label_name">附件</label><input name="附件" class="inline" type="file" id="file"
+                    <li><label class="label_name">附件</label><input name="attachment" class="inline" type="file" id="file"
                                                                    style="width:200px; margin-left:10px"/>
                     </li>
                 </ul>
@@ -40,11 +40,11 @@
 
             <div class="Tips_content" style="margin-left: 30px">
                 <h3><label>合同内容：</label></h3>
-                <textarea name="合同内容" cols="" rows="" style=" width:60%; height:220px"></textarea>
+                <textarea name="contract_content" cols="" rows="" style=" width:60%; height:220px"></textarea>
             </div>
         </div>
         <div class="btn_operating">
-            <button id="submit" class="btn btn-info" type="button">提交</button>
+            <input type="submit" class = "btn btn-primary"  value="提交" id = "submit"/>
             <button id="reset" class="btn" type="button">重置</button>
         </div>
     </form>
@@ -135,6 +135,18 @@
             }
         });
 
+        function click1(form) {
+           if (form.conteact_num.value == ""){
+               layer.alert("请输入合同名称");
+               return  false;
+           } else if (form.conteact_num.value == ""){
+               layer.alert("请输入合同名称");
+               return  false;
+           }
+
+            alert("到这了");
+        }
+
         $("#reset").click(function () {
 
             $("input,select,textarea").each(function (n) {
@@ -142,6 +154,7 @@
             });
         });
     });
+
 
 
 </script>

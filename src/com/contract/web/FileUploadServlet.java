@@ -5,6 +5,7 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,11 +19,14 @@ public class FileUploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        req.setCharacterEncoding("UTF-8");
+
         //先判断上传的数据是否为多端数据
         if (ServletFileUpload.isMultipartContent(req)){
             //创建fileitem工厂
             FileItemFactory fileItemFactory = new DiskFileItemFactory();
             ServletFileUpload servletFileUpload = new ServletFileUpload(fileItemFactory);
+            JSONObject jsonObject = new JSONObject();
 
             try {
                 List<FileItem> list = servletFileUpload.parseRequest(req);
@@ -32,10 +36,12 @@ public class FileUploadServlet extends HttpServlet {
 
                         System.out.println("表单项的name值" + fileItem.getFieldName());
                         System.out.println("表单项的value值" + fileItem.getString("UTF-8"));
+                        jsonObject.put(fileItem.getFieldName(),fileItem.getString("UTF-8"));
 
                     } else {//文件表单
                         System.out.println("表单项的name值" + fileItem.getFieldName());
                         System.out.println("上传的文件名" + fileItem.getName());
+
 
                         fileItem.write(new File("E:\\idea\\workspace\\Contract\\web\\upload\\" + fileItem.getName()));
                     }

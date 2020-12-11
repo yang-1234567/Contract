@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
         JSONObject jsonObject = new JSONObject();
         if (flag ){
             jsonObject.put("result","1");
-            jsonObject.put("rights","0 1 2 3 4 6");
+            jsonObject.put("rights","0 1 2 3 4 6 7 8 9 10 11");
         } else {
             jsonObject.put("result","0");
         }
