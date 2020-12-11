@@ -115,6 +115,9 @@
                         let js_receive = JSON.parse(this.responseText);
                         if (js_receive.result === '1') {
                             layer.alert("起草成功");
+                            $("input,select,textarea").each(function (n) {
+                                $(this).val("");
+                            });
                             return true;
                         } else {
                             layer.alert("起草失败");
