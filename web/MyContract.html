@@ -69,58 +69,61 @@
                 keyword = "";
             }
             let js_send = {
-                    "keyword": keyword
-                };
-
-            let js_receive = {
-                "ids": "1 2 3 4 5",
-                "names": "合同1 合同2 合同3 合同4 合同5",
-                "times": "2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10",
-                "state": "0 1 2 3 4"
+                "username": getCookie("curUser"),
+                "keyword": keyword
             };
-            let ids = js_receive.ids.split(" ");
-            let names = js_receive.names.split(" ");
-            let times = js_receive.times.split(" ");
-            let states = js_receive.state.split(" ");
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
 
-            for (var i = 0; i < 5; i++) {
-                let str;
-                str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
-                    '<td>' + times[i] + '</td>' +
-                    '<td><span>';
+                    let ids = js_receive.ids.split(" ");
+                    let names = js_receive.names.split(" ");
+                    let times = js_receive.times.split(" ");
+                    let states = js_receive.states.split(" ");
 
-                let m_state;
-                let s = parseInt(states[i]);
-                switch (s) {
-                    case 0:
-                        m_state = '待分配';
-                        break;
-                    case 1:
-                        m_state = '待会签';
-                        break;
-                    case 2:
-                        m_state = '待定稿';
-                        break;
-                    case 3:
-                        m_state = '待审批';
-                        break;
-                    case 4:
-                        m_state = '待签订';
-                        break;
-                    case 5:
-                        m_state = '已完成';
-                        break;
-                    case 6:
-                        m_state = '已拒绝';
-                        break;
-                    default:
-                        m_state = js_receive.state.split(i);
+                    for (var i = 0; i < 5; i++) {
+                        let str;
+                        str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
+                            '<td>' + times[i] + '</td>' +
+                            '<td><span>';
+
+                        let m_state;
+                        let s = parseInt(states[i]);
+                        switch (s) {
+                            case 0:
+                                m_state = '待分配';
+                                break;
+                            case 1:
+                                m_state = '待会签';
+                                break;
+                            case 2:
+                                m_state = '待定稿';
+                                break;
+                            case 3:
+                                m_state = '待审批';
+                                break;
+                            case 4:
+                                m_state = '待签订';
+                                break;
+                            case 5:
+                                m_state = '已完成';
+                                break;
+                            case 6:
+                                m_state = '已拒绝';
+                                break;
+                            default:
+                                m_state = js_receive.state.split(i);
+                        }
+                        str += m_state;
+                        str += '</span><input type="hidden" value="' + ids[i] + '"/> </td> </tr>';
+                        //追加到table中
+                        $("#countersign_table").append(str);
+                    }
                 }
-                str += m_state;
-                str += '</span><input type="hidden" value="' + ids[i] + '"/> </td> </tr>';
-                //追加到table中
-                $("#countersign_table").append(str);
-            }
+            };
+            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.send(JSON.stringify(js_send));
         }
 
         search();
