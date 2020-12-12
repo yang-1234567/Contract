@@ -100,41 +100,44 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        function search(){
+        function search() {
             let keyword = $("#keyword").val();
-            if(keyword ===undefined){
-                keyword="";
+            if (keyword === undefined) {
+                keyword = "";
             }
             //请求数据
             let js_send = {
                 "keyword": keyword
             };
 
-            //返回的数据
-            let response;
-            // let js_receive = JSON.parse(response);
-            let js_receive = {
-                "ids": "1 2 3",
-                "names":'张三 李四 王五',
-                "phones": "10000 10086 10001",
-                "address": "湖南 北京 西藏"
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+
+                    let ids = js_receive.ids.split(" ");
+                    let names = js_receive.names.split(" ");
+                    let phones = js_receive.phones.split(" ");
+                    let address = js_receive.address.split(" ");
+                    //初始化查询列表
+                    for (var i = 0; i < ids.length; i++) {
+                        let str;
+                        str = '<tr ><td colspan="2">' + names[i] + '</td>' +
+                            '<td colspan="2">' + phones[i] + '</td>' +
+                            '<td colspan="2">' + address[i] + '</td>' +
+                            '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary modify_btn">修改</button></td>' +
+                            '<td><button  value="' + ids[i] + '" type="button" class="btn btn-warning delete_btn ">删除</button></td> </tr>';
+                        //追加到table中
+                        $("#contract_table").append(str);
+                    }
+                }
+
             };
-            let ids = js_receive.ids.split(" ");
-            let names = js_receive.names.split(" ");
-            let phones = js_receive.phones.split(" ");
-            let address = js_receive.address.split(" ");
-            //初始化查询列表
-            for (var i = 0; i < ids.length; i++) {
-                let str;
-                str = '<tr ><td colspan="2">' + names[i] + '</td>' +
-                    '<td colspan="2">' + phones[i] + '</td>' +
-                    '<td colspan="2">' + address[i] + '</td>' +
-                    '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary modify_btn">修改</button></td>' +
-                    '<td><button  value="' + ids[i] + '" type="button" class="btn btn-warning delete_btn ">删除</button></td> </tr>';
-                //追加到table中
-                $("#contract_table").append(str);
-            }
+            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.send(JSON.stringify(js_send));
+
         }
+
         search();
         //查询
         $(document).on('click', '#search', function () {
@@ -155,8 +158,7 @@
         });
 
         $(document).on('click', '.modify_btn', function () {
-            $(this).parent().parent().find("a:eq(0)").html();
-            //获取合同信息
+            let customerId = $(this).val();
 
             layer.open({
                 type: 1,
@@ -196,49 +198,114 @@
                 content: "你确定要删除吗",
                 btn: ['确认', '取消'],
                 yes: function (index, layero) {
-                    $("#contract_table").find(".delete_btn").each(function (){
-                        if($(this).val()===id){
-                            $(this).parent().parent().remove();
-                            return;
+                    let js_send = {
+                        "operator": getCookie("curUsername"),
+                        "customerId": id
+                    }
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            let js_receive = JSON.parse(this.responseText);
+                            if (js_receive.result === '1') {
+                                $("#contract_table").find(".delete_btn").each(function () {
+                                    if ($(this).val() === id) {
+                                        $(this).parent().parent().remove();
+                                        return;
+                                    }
+                                })
+                                layer.alert("删除成功");
+                                layer.close(index);
+                            } else {
+                                layer.alert("删除失败");
+                            }
                         }
-                    })
-                    layer.close(index);
+
+                    };
+                    xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                    xhttp.send(JSON.stringify(js_send));
                 }
             });
 
         });
 
         $(document).on('click', '.btn_add', function () {
+            var id = $(this).val()
+            let js_send = {
+                "customerId": id;
+            }
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+                    //查询客户信息
+                    $(".add:eq(0)").val();
+                    $(".add:eq(1)").val();
+                    $(".add:eq(2)").val();
+                    $(".add:eq(3)").val();
+                    $(".add:eq(4)").val();
+                    $(".add:eq(5)").val();
+                    $(".add:eq(6)").val();
+                    $(".finalize:eq(0)").val();
+                    layer.open({
+                        type: 1,
+                        title: '新增客户',
+                        shadeClose: true, //点击遮罩关闭层
+                        area: ['450px', ''],
+                        content: $('#modify_menu'),
+                        btn: ['提交', '取消'],
+                        yes: function (index, layero) {
+                            var str = "";
+                            let pass = true;
+                            $(".add").each(function (n) {
+                                if ($(this).val() === "") {
+                                    pass = false;
+                                    layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                                        title: '提示框',
+                                        icon: 0,
+                                    });
 
-            //获取合同信息
-            layer.open({
-                type: 1,
-                title: '新增客户',
-                shadeClose: true, //点击遮罩关闭层
-                area: ['450px', ''],
-                content: $('#modify_menu'),
-                btn: ['提交', '取消'],
-                yes: function (index, layero) {
-                    var str = "";
-                    $(".add").each(function (n) {
-                        if ($(this).val() === "") {
-                            layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
-                                title: '提示框',
-                                icon: 0,
+                                }
                             });
+                            if (pass) {
+                                let js_send = {
+                                    "operator": getCookie('curUsername'),
+                                    "id": id,
+                                    "name": $(".add:eq(0)").val(),
+                                    "address": $(".add:eq(1)").val(),
+                                    "phone": $(".add:eq(2)").val(),
+                                    "fax": $(".add:eq(3)").val(),
+                                    "email": $(".add:eq(4)").val(),
+                                    "bankName": $(".add:eq(5)").val(),
+                                    "bankAccount": $(".add:eq(6)").val(),
+                                    "append": $(".finalize:eq(0)").val(),
+                                }
+                                let xhttp = new XMLHttpRequest();
+                                xhttp.onreadystatechange = function () {
+                                    if (this.readyState === 4 && this.status === 200) {
+                                        let js_receive = JSON.parse(this.responseText);
+                                        if (js_receive.result === '1') {
+                                            layer.alert('修改成功！', {
+                                                title: '提示框',
+                                                icon: 1,
+                                            });
+                                            layer.close(index);
+                                        } else {
+                                            layer.alert("添加失败");
+                                        }
+                                    }
 
-                        } else {
-                            layer.alert('修改成功！', {
-                                title: '提示框',
-                                icon: 1,
-                            });
-                            layer.close(index);
+                                };
+                                xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                                xhttp.send(JSON.stringify(js_send));
+                            }
+
                         }
                     });
-
                 }
-            });
 
+            };
+            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.send(JSON.stringify(js_send));
         });
     })
 
