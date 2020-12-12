@@ -40,30 +40,20 @@
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 let js_receive = JSON.parse(this.responseText);
-                if (js_receive.result === '1') {
-                    let js_receive = {
-                        "name": getCookie("contractId"),
-                        "customer": "张三",
-                        "startTime": "2020-12-01",
-                        "endTime": "2020-12-10",
-                        "fileName": "合同.pdf",
-                        "content": "这是合同内容"
-                    }
-
-                    $("span:eq(0)").html(js_receive.name);
-                    $("span:eq(1)").html(js_receive.customer);
-                    $("span:eq(2)").html(js_receive.startTime);
-                    $("span:eq(3)").html(js_receive.endTime);
-                    $("span:eq(4)").html(js_receive.fileName);
-                    $("p:eq(0)").html(js_receive.content);
-                } else {
-                    return false;
-                }
+                $("span:eq(0)").html(js_receive.contractName);
+                $("span:eq(1)").html(js_receive.customerName);
+                $("span:eq(2)").html(js_receive.startTime);
+                $("span:eq(3)").html(js_receive.endTime);
+                $("span:eq(4)").append('<a id="download">' + js_receive.filename + '</a>');
+                $("p:eq(0)").html(js_receive.content);
             }
         };
         xhttp.open("POST", "http://localhost:8888/Contract/draftServlet", true);
-        xhttp.send('{"contractId":'+getCookie("contractId")+'}');
+        xhttp.send('{"contractId":' + getCookie("contractId") + '}');
 
+        $(document).on('click', '#download', function () {
+            //下载文件
+        })
     })
 </script>
 </html>

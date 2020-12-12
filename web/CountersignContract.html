@@ -86,26 +86,27 @@
                 keyword = "";
             }
             let js_send = {
+                "username":getCookie("curUsername"),
                 "keyword": keyword,
-                "state": 1
+                "process": 1
             };
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     let js_receive = JSON.parse(this.responseText);
 
-                        let ids = js_receive.ids.split(" ");
-                        let names = js_receive.names.split(" ");
-                        let times = js_receive.times.split(" ");
-                        //初始化查询列表
+                    let ids = js_receive.ids.split(" ");
+                    let names = js_receive.names.split(" ");
+                    let times = js_receive.times.split(" ");
+                    //初始化查询列表
 
-                        for (var i = 0; i < ids[i]; i++) {
-                            var str = "";//定义用于拼接的字符串
-                            str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
-                                '<td>' + times[i] + '</td>' +
-                                '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary countersign_btn">会签</button> </td> </tr>';
-                            //追加到table中
-                            $("#countersign_table").append(str);
+                    for (var i = 0; i < ids.length; i++) {
+                        var str = "";//定义用于拼接的字符串
+                        str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
+                            '<td>' + times[i] + '</td>' +
+                            '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary countersign_btn">会签</button> </td> </tr>';
+                        $("#countersign_table").append(str);
+                    }//追加到table中
 
                 }
             };
@@ -154,24 +155,40 @@
                         });
                         return false;
                     } else {
-                        $("#countersign_table").eq(0).find("tr").each(function () {
-                            if ($(this).eq(0).find("button").val() === value) {
-                                $(this).remove();
-                            }
-                        });
-
                         let js_send = {
                             "contractId": value,
-                            "content": $('#suggestion').val(),
-                            "state": 1,
+                            "username": getCookie("curUsername"),
+                            "type": 1,
+                            "suggestion":$('#suggestion').val()
                         }
+                        let xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                let js_receive = JSON.parse(this.responseText);
+                                if(js_receive.result==='1'){
+                                    $("#countersign_table").eq(0).find("tr").each(function () {
+                                        if ($(this).eq(0).find("button").val() === value) {
+                                            $(this).remove();
+                                        }
+                                    });
+                                    layer.alert('已会签！', {
+                                        title: '提示框',
+                                        icon: 1,
+                                    });
+                                    layer.close(index);
+                                    return true;
+                                }else{
+                                    layer.alert('会签失败！', {
+                                        title: '提示框',
+                                        icon: 1,
+                                    });
+                                }
 
-                        layer.alert('已会签！', {
-                            title: '提示框',
-                            icon: 1,
-                        });
-                        layer.close(index);
-                        return true;
+                            }
+                        };
+                        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                        xhttp.send(JSON.stringify(js_send));
+
                     }
                 },
                 btn2: function (index, layero) {
