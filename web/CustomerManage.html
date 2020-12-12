@@ -157,156 +157,189 @@
             });
         });
 
-        $(document).on('click', '.modify_btn', function () {
-            let customerId = $(this).val();
+        $(document).on('click', '.add_btn', function () {
+            $(".add:eq(0)").val();
+            $(".add:eq(1)").val();
+            $(".add:eq(2)").val();
+            $(".add:eq(3)").val();
+            $(".add:eq(4)").val();
+            $(".add:eq(5)").val();
+            $(".add:eq(6)").val();
+            $(".finalize:eq(0)").val();
 
             layer.open({
                 type: 1,
-                title: '修改客户信息',
+                title: '新增客户',
                 shadeClose: true, //点击遮罩关闭层
                 area: ['500px', ''],
                 content: $('#modify_menu'),
                 btn: ['修改', '取消'],
                 yes: function (index, layero) {
                     var str = "";
-                    $(".finalize").each(function (n) {
+                    let pass = true;
+                    $(".add").each(function (n) {
                         if ($(this).val() === "") {
+                            pass = false;
                             layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
                                 title: '提示框',
                                 icon: 0,
                             });
 
-                        } else {
-                            layer.alert('修改成功！', {
-                                title: '提示框',
-                                icon: 1,
-                            });
-                            layer.close(index);
                         }
                     });
-
-                }
-            });
-
-        });
-
-        $(document).on('click', '.delete_btn', function () {
-            let id = $(this).val();
-            layer.open({
-                title: '删除角色',
-                shadeClose: true, //点击遮罩关闭层
-                content: "你确定要删除吗",
-                btn: ['确认', '取消'],
-                yes: function (index, layero) {
-                    let js_send = {
-                        "operator": getCookie("curUsername"),
-                        "customerId": id
-                    }
-                    let xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState === 4 && this.status === 200) {
-                            let js_receive = JSON.parse(this.responseText);
-                            if (js_receive.result === '1') {
-                                $("#contract_table").find(".delete_btn").each(function () {
-                                    if ($(this).val() === id) {
-                                        $(this).parent().parent().remove();
-                                        return;
-                                    }
-                                })
-                                layer.alert("删除成功");
-                                layer.close(index);
-                            } else {
-                                layer.alert("删除失败");
-                            }
+                    if (pass) {
+                        let js_send = {
+                            "operator": getCookie('curUsername'),
+                            "name": $(".add:eq(0)").val(),
+                            "address": $(".add:eq(1)").val(),
+                            "phone": $(".add:eq(2)").val(),
+                            "fax": $(".add:eq(3)").val(),
+                            "email": $(".add:eq(4)").val(),
+                            "bankName": $(".add:eq(5)").val(),
+                            "bankAccount": $(".add:eq(6)").val(),
+                            "append": $(".finalize:eq(0)").val(),
                         }
-
-                    };
-                    xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
-                    xhttp.send(JSON.stringify(js_send));
-                }
-            });
-
-        });
-
-        $(document).on('click', '.btn_add', function () {
-            var id = $(this).val()
-            let js_send = {
-                "customerId": id;
-            }
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    let js_receive = JSON.parse(this.responseText);
-                    //查询客户信息
-                    $(".add:eq(0)").val();
-                    $(".add:eq(1)").val();
-                    $(".add:eq(2)").val();
-                    $(".add:eq(3)").val();
-                    $(".add:eq(4)").val();
-                    $(".add:eq(5)").val();
-                    $(".add:eq(6)").val();
-                    $(".finalize:eq(0)").val();
-                    layer.open({
-                        type: 1,
-                        title: '新增客户',
-                        shadeClose: true, //点击遮罩关闭层
-                        area: ['450px', ''],
-                        content: $('#modify_menu'),
-                        btn: ['提交', '取消'],
-                        yes: function (index, layero) {
-                            var str = "";
-                            let pass = true;
-                            $(".add").each(function (n) {
-                                if ($(this).val() === "") {
-                                    pass = false;
-                                    layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                        let xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                let js_receive = JSON.parse(this.responseText);
+                                if (js_receive.result === '1') {
+                                    layer.alert('添加成功！', {
                                         title: '提示框',
-                                        icon: 0,
+                                        icon: 1,
                                     });
-
+                                    layer.close(index);
+                                } else {
+                                    layer.alert("添加失败");
                                 }
-                            });
-                            if (pass) {
-                                let js_send = {
-                                    "operator": getCookie('curUsername'),
-                                    "id": id,
-                                    "name": $(".add:eq(0)").val(),
-                                    "address": $(".add:eq(1)").val(),
-                                    "phone": $(".add:eq(2)").val(),
-                                    "fax": $(".add:eq(3)").val(),
-                                    "email": $(".add:eq(4)").val(),
-                                    "bankName": $(".add:eq(5)").val(),
-                                    "bankAccount": $(".add:eq(6)").val(),
-                                    "append": $(".finalize:eq(0)").val(),
-                                }
-                                let xhttp = new XMLHttpRequest();
-                                xhttp.onreadystatechange = function () {
-                                    if (this.readyState === 4 && this.status === 200) {
-                                        let js_receive = JSON.parse(this.responseText);
-                                        if (js_receive.result === '1') {
-                                            layer.alert('修改成功！', {
-                                                title: '提示框',
-                                                icon: 1,
-                                            });
-                                            layer.close(index);
-                                        } else {
-                                            layer.alert("添加失败");
-                                        }
-                                    }
-
-                                };
-                                xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
-                                xhttp.send(JSON.stringify(js_send));
                             }
 
-                        }
-                    });
+                        };
+                        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                        xhttp.send(JSON.stringify(js_send));
+                    }
                 }
+            });
+    });
 
-            };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
-            xhttp.send(JSON.stringify(js_send));
+
+    $(document).on('click', '.delete_btn', function () {
+        let id = $(this).val();
+        layer.open({
+            title: '删除角色',
+            shadeClose: true, //点击遮罩关闭层
+            content: "你确定要删除吗",
+            btn: ['确认', '取消'],
+            yes: function (index, layero) {
+                let js_send = {
+                    "operator": getCookie("curUsername"),
+                    "customerId": id
+                }
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        let js_receive = JSON.parse(this.responseText);
+                        if (js_receive.result === '1') {
+                            $("#contract_table").find(".delete_btn").each(function () {
+                                if ($(this).val() === id) {
+                                    $(this).parent().parent().remove();
+                                    return;
+                                }
+                            })
+                            layer.alert("删除成功");
+                            layer.close(index);
+                        } else {
+                            layer.alert("删除失败");
+                        }
+                    }
+
+                };
+                xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                xhttp.send(JSON.stringify(js_send));
+            }
         });
+
+    });
+
+    $(document).on('click', '.modify_btn', function () {
+        var id = $(this).val()
+        let js_send = {
+            "customerId": id;
+        }
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let js_receive = JSON.parse(this.responseText);
+                //查询客户信息
+                $(".add:eq(0)").val();
+                $(".add:eq(1)").val();
+                $(".add:eq(2)").val();
+                $(".add:eq(3)").val();
+                $(".add:eq(4)").val();
+                $(".add:eq(5)").val();
+                $(".add:eq(6)").val();
+                $(".finalize:eq(0)").val();
+                layer.open({
+                    type: 1,
+                    title: '修改客户信息',
+                    shadeClose: true, //点击遮罩关闭层
+                    area: ['450px', ''],
+                    content: $('#modify_menu'),
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        var str = "";
+                        let pass = true;
+                        $(".add").each(function (n) {
+                            if ($(this).val() === "") {
+                                pass = false;
+                                layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                                    title: '提示框',
+                                    icon: 0,
+                                });
+
+                            }
+                        });
+                        if (pass) {
+                            let js_send = {
+                                "operator": getCookie('curUsername'),
+                                "id": id,
+                                "name": $(".add:eq(0)").val(),
+                                "address": $(".add:eq(1)").val(),
+                                "phone": $(".add:eq(2)").val(),
+                                "fax": $(".add:eq(3)").val(),
+                                "email": $(".add:eq(4)").val(),
+                                "bankName": $(".add:eq(5)").val(),
+                                "bankAccount": $(".add:eq(6)").val(),
+                                "append": $(".finalize:eq(0)").val(),
+                            }
+                            let xhttp = new XMLHttpRequest();
+                            xhttp.onreadystatechange = function () {
+                                if (this.readyState === 4 && this.status === 200) {
+                                    let js_receive = JSON.parse(this.responseText);
+                                    if (js_receive.result === '1') {
+                                        layer.alert('修改成功！', {
+                                            title: '提示框',
+                                            icon: 1,
+                                        });
+                                        layer.close(index);
+                                    } else {
+                                        layer.alert("添加失败");
+                                    }
+                                }
+
+                            };
+                            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                            xhttp.send(JSON.stringify(js_send));
+                        }
+
+                    }
+                });
+            }
+
+        };
+        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+        xhttp.send(JSON.stringify(js_send));
+    });
     })
 
 </script>
