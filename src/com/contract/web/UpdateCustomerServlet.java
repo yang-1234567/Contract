@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-public class CounterSignServlet extends HttpServlet {
-    @Override
+public class UpdateCustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         String resultString = myUtils.getRequestString(req);
@@ -23,6 +23,21 @@ public class CounterSignServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        String operator = (String)jsonObject.get("operator");
+        String id  = (String) jsonObject.get("id");
+        String name = (String) jsonObject.get("name");
+        String address = (String) jsonObject.get("address");
+        String phone = (String) jsonObject.get("phone");
+        String fax = (String) jsonObject.get("fax");
+        String email = (String) jsonObject.get("email");
+        String bankName = (String) jsonObject.get("bankName");
+        String bankAccount = (String) jsonObject.get("bankAccount");
+        String append = (String) jsonObject.get("append");
+
         JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("result","");
+        resp.setCharacterEncoding("UTF-8");
+        PrintWriter writer = resp.getWriter();
+        writer.write(jsonObject1.toJSONString());
     }
 }

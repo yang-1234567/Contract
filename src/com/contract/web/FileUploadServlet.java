@@ -39,6 +39,8 @@ public class FileUploadServlet extends HttpServlet {
 
                     } else {//文件表单
 
+                        jsonObject.put(fileItem.getFieldName(),fileItem.getString("UTF-8"));
+                        fileItem.write(new File("E:\\idea\\workspace\\Contract\\web\\upload" + jsonObject.get("contrac_num") +fileItem.getName()));
                     }
                 }
             } catch (Exception e) {

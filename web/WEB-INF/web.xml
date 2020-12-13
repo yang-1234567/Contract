@@ -58,4 +58,220 @@
         <url-pattern>/searchAssignServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SearchCounterSignServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchCounterSignServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchCounterSignServlet</servlet-name>
+        <url-pattern>/searchCounterSignServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchContractByProcessServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchContractByProcessServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchContractByProcessServlet</servlet-name>
+        <url-pattern>/searchContractByProcessServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ContractDetailServlet</servlet-name>
+        <servlet-class>com.contract.web.ContractDetailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ContractDetailServlet</servlet-name>
+        <url-pattern>/contractDetailServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ConterSignServlet</servlet-name>
+        <servlet-class>com.contract.web.ConterSignServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConterSignServlet</servlet-name>
+        <url-pattern>/conterSignServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ApproveServlet</servlet-name>
+        <servlet-class>com.contract.web.ApproveServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ApproveServlet</servlet-name>
+        <url-pattern>/approveServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchProcessServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchProcessServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchProcessServlet</servlet-name>
+        <url-pattern>/searchProcessServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchMyServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchMyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchMyServlet</servlet-name>
+        <url-pattern>/searchMyServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchAllContractServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchAllContractServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchAllContractServlet</servlet-name>
+        <url-pattern>/searchAllContractServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteContractServlet</servlet-name>
+        <servlet-class>com.contract.web.DeleteContractServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteContractServlet</servlet-name>
+        <url-pattern>/deleteContractServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchAllCustomerServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchAllCustomerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchAllCustomerServlet</servlet-name>
+        <url-pattern>/searchAllCustomerServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddNewCustomerServlet</servlet-name>
+        <servlet-class>com.contract.web.AddNewCustomerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddNewCustomerServlet</servlet-name>
+        <url-pattern>/addNewCustomerServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateCustomerServlet</servlet-name>
+        <servlet-class>com.contract.web.UpdateCustomerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateCustomerServlet</servlet-name>
+        <url-pattern>/updateCustomerServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteCustomerServlet</servlet-name>
+        <servlet-class>com.contract.web.DeleteCustomerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteCustomerServlet</servlet-name>
+        <url-pattern>/deleteCustomerServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FenpeiContractServlet</servlet-name>
+        <servlet-class>com.contract.web.FenpeiContractServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FenpeiContractServlet</servlet-name>
+        <url-pattern>/fenpeiContractServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchAllRoleServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchAllRoleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchAllRoleServlet</servlet-name>
+        <url-pattern>/searchAllRoleServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddNewRoleServlet</servlet-name>
+        <servlet-class>com.contract.web.AddNewRoleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddNewRoleServlet</servlet-name>
+        <url-pattern>/addNewRoleServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateRoleServlet</servlet-name>
+        <servlet-class>com.contract.web.UpdateRoleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateRoleServlet</servlet-name>
+        <url-pattern>/updateRoleServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteRoleServlet</servlet-name>
+        <servlet-class>com.contract.web.DeleteRoleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteRoleServlet</servlet-name>
+        <url-pattern>/deleteRoleServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchUserServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchUserServlet</servlet-name>
+        <url-pattern>/searchUserServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddNewRoleForUserServlet</servlet-name>
+        <servlet-class>com.contract.web.AddNewRoleForUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddNewRoleForUserServlet</servlet-name>
+        <url-pattern>/addNewRoleForUserServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchUserInformationServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchUserInformationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchUserInformationServlet</servlet-name>
+        <url-pattern>/searchUserInformationServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <servlet-class>com.contract.web.UpdateUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <url-pattern>/updateUserServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>com.contract.web.DeleteUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/deleteUserServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchRolesServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchRolesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchRolesServlet</servlet-name>
+        <url-pattern>/SearchRolesServlet</url-pattern>
+    </servlet-mapping>
+
 </web-app>

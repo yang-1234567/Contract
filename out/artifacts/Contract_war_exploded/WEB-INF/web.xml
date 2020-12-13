@@ -58,4 +58,13 @@
         <url-pattern>/searchAssignServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SearchCounterSignServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchCounterSignServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchCounterSignServlet</servlet-name>
+        <url-pattern>/searchCounterSignServlet</url-pattern>
+    </servlet-mapping>
+
 </web-app>
