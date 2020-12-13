@@ -230,6 +230,7 @@
                     } else {
                         //提交数据
                         let js_send = {
+                            "operator":getCookie("curUsername")
                             "contractId": value,
                             "countersign": countersign,
                             "approve": approve,
@@ -247,7 +248,7 @@
                                             $(this).remove();
                                         }
                                     });
-                                    layer.alert('已提交！', {
+                                    layer.alert('已分配！', {
                                         title: '提示框',
                                         icon: 1,
                                     });

@@ -36,8 +36,6 @@
                             <li><label class="label_name">用户角色</label>
                                 <select name="用户角色" size="1" id="select_Roles" class="">
                                     <option selected value="">--请选择--</option>
-                                    <option value="管理员">管理员</option>
-                                    <option value="操作员">操作员</option>
                                 </select>
                                 <i style="color:#F60; ">*</i>
                             </li>
@@ -88,98 +86,220 @@
 <script type="text/javascript" src="assets/layer/layer.js"></script>
 <script type="text/javascript">
 
-    for (let i = 0; i < 3; i++) {
-        let name = "张三" + i;
-        let role = "操作员";
-        let str = '<tr><td >' + name + '</td>' +
-            '<td >' + role + '</td>' +
-            '<td ><button value="' + name + '" type="button" class="btn btn-primary modify_btn">修改</button>' +
-            '<button value="' + name + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
-        $("#user_table").append(str);
-    }
+    $(document).ready(function () {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let js_receive = JSON.parse(this.responseText);
+                let names = js_receive.usernames.split(" ");
+                let roles = js_receive.roles.split(" ");
 
-    /***判断用户添加文本**/
-    $('#Add_user_btn').on('click', function () {
-        layer.open({
-            type: 1,
-            title: '添加用户',
-            maxmin: true,
-            shadeClose: true, //点击遮罩关闭层
-            area: ['300px', '270px'],
-            content: $('#Add_user_style'),
-            btn: ['添加', '取消'],
-            yes: function (index, layero) {
-                let name = $("#name").val();
-                let password = $("#password").val();
-                let role = $("#select_Roles").val();
-                if (name === "") {
-                    layer.alert('登录用户名不能为空!', {
-                        title: '提示框',
-                        icon: 0,
+                for (let i = 0; i < names.length; i++) {
 
-                    });
-                    return false;
-                }
-                if (password === "") {
-                    layer.alert('密码不能为空!', {
-                        title: '提示框',
-                        icon: 0,
-
-                    });
-                    return false;
-                }
-
-                if (role === "") {
-                    layer.alert('用角色不能为空!', {
-                        title: '提示框',
-                        icon: 0,
-
-                    });
-                    return false;
-                } else {
-                    let str = '<tr><td >' + name + '</td>' +
-                        '<td >' + role + '</td>' +
-                        '<td >' +
-                        '<button value="' + name + '" type="button" class="btn btn-primary modify_btn">修改</button>' +
-                        '<button value="' + name + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
+                    let str = '<tr><td >' + names[i] + '</td>' +
+                        '<td >' + roles[i] + '</td>' +
+                        '<td ><button value="' + names[i] + '" type="button" class="btn btn-primary modify_btn">修改</button>' +
+                        '<button value="' + names[i] + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
                     $("#user_table").append(str);
-
-                    layer.alert('添加成功！', {
-                        title: '提示框',
-                        icon: 1,
-                    });
-                    layer.close(index);
                 }
-            },
-            cancel: function (index) {
-
-                // layer.alert('确定退出！',{
-                //     title: '提示框',
-                //     icon:1,
-                // });
-
             }
-        });
-    });
+        };
+        xhttp.open("GET", "http://localhost:8888/Contract/searchAssignServlet", true);
+        xhttp.send();
 
-    $(document).on('click', '.delete_btn', function () {
-        let name = $(this).val();
-        layer.open({
-            title: '删除角色',
-            shadeClose: true, //点击遮罩关闭层
-            content: "你确定要删除吗",
-            btn: ['确认', '取消'],
-            yes: function (index, layero) {
-                $("#user_table").find(".delete_btn").each(function (){
-                    if($(this).val()===name){
-                        $(this).parent().parent().remove();
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let js_receive = JSON.parse(this.responseText);
+                let names = js_receive.roleName.split(" ");
+                for (let i = 0; i < names.length; i++) {
+                    let str = '<option>' + names[i] + '</option>';
+                    $("#select_Roles").append(str);
+                }
+            }
+        };
+        xhttp.open("GET", "http://localhost:8888/Contract/searchAssignServlet", true);
+        xhttp.send();
+
+        /***判断用户添加文本**/
+        $('#Add_user_btn').on('click', function () {
+            layer.open({
+                type: 1,
+                title: '添加用户',
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['300px', '270px'],
+                content: $('#Add_user_style'),
+                btn: ['添加', '取消'],
+                yes: function (index, layero) {
+                    let name = $("#name").val();
+                    let password = $("#password").val();
+                    let role = $("#select_Roles").val();
+                    if (name === "") {
+                        layer.alert('登录用户名不能为空!');
+                        return false;
                     }
-                })
-                layer.close(index);
-            }
+                    if (password === "") {
+                        layer.alert('密码不能为空!');
+                        return false;
+                    }
+                    if (role === "") {
+                        layer.alert('用角色不能为空!');
+                        return false;
+                    } else {
+                        let js_send = {
+                            "operator": getCookie('curUsername'),
+                            "username": name,
+                            "password": password,
+                            "roleName": role
+                        }
+                        let xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                let js_receive = JSON.parse(this.responseText);
+                                if (js_receive.result === '1') {
+                                    let str = '<tr><td >' + name + '</td>' +
+                                        '<td >' + role + '</td>' +
+                                        '<td >' +
+                                        '<button value="' + name + '" type="button" class="btn btn-primary modify_btn">修改</button>' +
+                                        '<button value="' + name + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
+                                    $("#user_table").append(str);
+
+                                    layer.alert('添加成功！', {
+                                        title: '提示框',
+                                        icon: 1,
+                                    });
+                                    layer.close(index);
+                                } else {
+                                    layer.alert('添加失败');
+                                }
+                            }
+                        };
+                        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                        xhttp.send(JSON.stringify(js_send));
+
+                    }
+                },
+                cancel: function (index) {
+                }
+            });
         });
 
+        $(document).on('click', '.delete_btn', function () {
+            let name = $(this).val();
+            layer.open({
+                title: '删除角色',
+                shadeClose: true, //点击遮罩关闭层
+                content: "你确定要删除吗",
+                btn: ['确认', '取消'],
+                yes: function (index, layero) {
+                    let js_send = {
+                        "operator": getCookie('curUsername'),
+                        "username": name,
+                    }
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            let js_receive = JSON.parse(this.responseText);
+                            if (js_receive.result === '1') {
+                                $("#user_table").find(".delete_btn").each(function () {
+                                    if ($(this).val() === name) {
+                                        $(this).parent().parent().remove();
+                                    }
+                                })
+                                layer.alert('删除成功！', {
+                                    title: '提示框',
+                                    icon: 1,
+                                });
+                                layer.close(index);
+                            } else {
+                                layer.alert('删除失败');
+                            }
+                        }
+                    };
+                    xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                    xhttp.send(JSON.stringify(js_send));
+
+                }
+            });
+
+        })
+
+        $(document).on('click', '.modify_btn', function () {
+            let name = $(this).val();
+            let js_send = {
+                "username": name
+            }
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+                    $("#name").val(name);
+                    $("#password").val(js_receive.password);
+                    $("#select_Roles").val(js_receive.role);
+                    $("#name").disabled();
+                    layer.open({
+                        type: 1,
+                        title: '修改用户',
+                        maxmin: true,
+                        shadeClose: true, //点击遮罩关闭层
+                        area: ['300px', '270px'],
+                        content: $('#Add_user_style'),
+                        btn: ['添加', '取消'],
+                        yes: function (index, layero) {
+                            const password = $("#password").val();
+                            const role = $("#select_Roles").val()
+                            if (password === "") {
+                                layer.alert('密码不能为空!');
+                                return false;
+                            }
+                            if (role === "") {
+                                layer.alert('用角色不能为空!');
+                                return false;
+                            } else {
+                                let js_send = {
+                                    "operator": getCookie('curUsername'),
+                                    "username": name,
+                                    "newPassword": password,
+                                    "newRole": role
+                                }
+                                let xhttp = new XMLHttpRequest();
+                                xhttp.onreadystatechange = function () {
+                                    if (this.readyState === 4 && this.status === 200) {
+                                        let js_receive = JSON.parse(this.responseText);
+                                        if (js_receive.result === '1') {
+                                            $("tr").find('.modify_btn').each(function () {
+                                                if ($(this).val() === name) {
+                                                    $(this).parent().parent().eq(1).val(role);
+                                                }
+                                            })
+                                            layer.alert('修改成功！', {
+                                                title: '提示框',
+                                                icon: 1,
+                                            });
+                                            layer.close(index);
+                                        } else {
+                                            layer.alert('修改失败');
+                                        }
+                                    }
+                                };
+                                xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                                xhttp.send(JSON.stringify(js_send));
+
+                            }
+                        },
+                        cancel: function (index) {
+                        }
+                    });
+                }
+            }
+            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.send(JSON.stringify(js_send));
+
+
+        })
     })
+
 
 </script>
 </body>

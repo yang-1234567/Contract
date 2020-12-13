@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -103,38 +103,41 @@
 
     $(document).ready(function () {
 
-        function search(){
+        function search() {
             let keyword = $("#keyword").val();
-            if(keyword ===undefined){
-                keyword="";
+            if (keyword === undefined) {
+                keyword = "";
             }
             //请求数据
             let js_send = {
                 "keyword": keyword
             };
 
-            //返回的数据
-            let response;
-            // let js_receive = JSON.parse(response);
-            let js_receive = {
-                "ids": "1 2 3 4 5",
-                "names": "合同1 合同2 合同3 合同4 合同5",
-                "times": "2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10"
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+
+                    let ids = js_receive.ids.split(" ");
+                    let names = js_receive.names.split(" ");
+                    let times = js_receive.times.split(" ");
+                    //初始化查询列表
+                    for (var i = 0; i < ids.length; i++) {
+                        let str;
+                        str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
+                            '<td>' + times[i] + '</td>' +
+                            '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary modify_btn">修改</button></td>' +
+                            '<td><button  value="' + ids[i] + '" type="button" class="btn btn-warning delete_btn ">删除</button></td> </tr>';
+                        //追加到table中
+                        $("#contract_table").append(str);
+                    }
+                }
             };
-            let ids = js_receive.ids.split(" ");
-            let names = js_receive.names.split(" ");
-            let times = js_receive.times.split(" ");
-            //初始化查询列表
-            for (var i = 0; i < ids.length; i++) {
-                let str;
-                str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
-                    '<td>' + times[i] + '</td>' +
-                    '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary modify_btn">修改</button></td>' +
-                    '<td><button  value="' + ids[i] + '" type="button" class="btn btn-warning delete_btn ">删除</button></td> </tr>';
-                //追加到table中
-                $("#contract_table").append(str);
-            }
+            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.send(JSON.stringify(js_send));
+
         }
+
         search();
         //查询
         $(document).on('click', '#search', function () {
@@ -196,13 +199,31 @@
                 content: "你确定要删除吗",
                 btn: ['确认', '取消'],
                 yes: function (index, layero) {
-                    $("#contract_table").find(".delete_btn").each(function (){
-                        if($(this).val()===id){
-                            $(this).parent().parent().remove();
-                            return;
+                    let js_send = {
+                        "username": getCookie("curUsername"),
+                        "contractId": id
+                    }
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            let js_receive = JSON.parse(this.responseText);
+                            if (js_receive.result === '1') {
+                                $("#contract_table").find(".delete_btn").each(function () {
+                                    if ($(this).val() === id) {
+                                        $(this).parent().parent().remove();
+                                        return;
+                                    }
+                                })
+                                layer.close(index);
+                            } else {
+                                layer.alert("删除失败");
+                            }
                         }
-                    })
-                    layer.close(index);
+
+                    };
+                    xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                    xhttp.send(JSON.stringify(js_send));
+
                 }
             });
 
