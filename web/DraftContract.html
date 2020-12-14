@@ -72,11 +72,11 @@
     });
 
     function click1(form) {
-        if (form.contract_name.value == ""){
+        if (form.contract_name.value === ""){
             layer.alert("请输入合同名称");
             return  false;
-        } else if (form.customer.value == ""){
-            layer.alert("请输入合同名称");
+        } else if (form.customer.value === ""){
+            layer.alert("请输入客户名称");
             return  false;
         }
 
