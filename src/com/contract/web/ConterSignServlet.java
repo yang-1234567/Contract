@@ -1,5 +1,6 @@
 package com.contract.web;
 
+import com.contract.functions.CounterSign;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -23,11 +24,12 @@ public class ConterSignServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String contractid = (String)jsonObject.get("contracId");
+        String contractId = (String)jsonObject.get("contractId");
         String operator = (String)jsonObject.get("operator");
         String type = (String)jsonObject.get("type");
         String suggestion = (String)jsonObject.get("suggestion");
 
+        new CounterSign(contractId,operator,suggestion);
 
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("result","");

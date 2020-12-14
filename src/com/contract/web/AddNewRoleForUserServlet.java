@@ -1,5 +1,9 @@
 package com.contract.web;
 
+import com.contract.database.Right;
+import com.contract.database.RightDAO;
+import com.contract.database.User;
+import com.contract.database.UserDAO;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,6 +32,11 @@ public class AddNewRoleForUserServlet extends HttpServlet {
         String password = (String) jsonObject.get("password");
         String roleName = (String) jsonObject.get("roleName");
 
+        User user = new User(username,password,1);
+        UserDAO.UpdateUser(user);
+
+        Right right = new Right(username,roleName,"");
+        RightDAO.UpdateRight(right);
 
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("result","");

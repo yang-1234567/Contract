@@ -1,5 +1,7 @@
 package com.contract.web;
 
+import com.contract.database.Contract;
+import com.contract.database.ContractDAO;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,7 +28,6 @@ public class ContractDetailServlet extends HttpServlet {
 
         String contractid = (String)jsonObject.get("contractId");
         String username = (String)jsonObject.get("username");
-
 
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("contractName","");

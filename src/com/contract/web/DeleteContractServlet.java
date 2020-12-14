@@ -1,5 +1,7 @@
 package com.contract.web;
 
+import com.contract.database.Contract;
+import com.contract.database.ContractDAO;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,7 +26,10 @@ public class DeleteContractServlet extends HttpServlet {
         }
 
         String operator = (String)jsonObject.get("operator");
-        String contractid = (String) jsonObject.get("contractid");
+        String contractId = (String) jsonObject.get("contractId");
+
+//        Contract contract = new Contract(contractId);
+//        ContractDAO.DeleteContract(contract);
 
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("result","");

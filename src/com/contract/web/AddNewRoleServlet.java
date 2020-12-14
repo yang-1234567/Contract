@@ -1,5 +1,7 @@
 package com.contract.web;
 
+import com.contract.database.Role;
+import com.contract.database.RoleDAO;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -27,6 +29,8 @@ public class AddNewRoleServlet extends HttpServlet {
         String roleName = (String) jsonObject.get("roleName");
         String description =(String) jsonObject.get("description");
 
+        Role newRole=new Role(roleName,description,1);
+        RoleDAO.InsertRole(newRole);
 
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("result","");

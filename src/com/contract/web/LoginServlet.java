@@ -1,6 +1,7 @@
 package com.contract.web;
 
 import com.contract.database.Tools;
+import com.contract.database.UserDAO;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -32,6 +33,7 @@ public class LoginServlet extends HttpServlet {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
 
         PrintWriter writer = resp.getWriter();
         JSONObject jsonObject = new JSONObject();

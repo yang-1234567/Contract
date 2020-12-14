@@ -1,5 +1,6 @@
 package com.contract.web;
 
+import com.contract.functions.Approve;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -23,11 +24,13 @@ public class ApproveServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String keyword = (String)jsonObject.get("keyword");
-        String contractid = (String)jsonObject.get("contractid");
+        String operator = (String)jsonObject.get("operator");
+        String contractId = (String)jsonObject.get("contractId");
         String type = (String)jsonObject.get("type");
         String approve = (String)jsonObject.get("approve");
         String suggestion = (String)jsonObject.get("suggestion");
+
+        new Approve(contractId,operator,suggestion,Integer.parseInt(approve));
 
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("resule","");
