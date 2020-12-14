@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RightDAO {
-	public static List<Right> getRight(){
-		List<Right> cons = new ArrayList<>();
+	public static Right getRight(String un){
+		
 		Connection conn=null;
 	    Statement st=null;
 	    ResultSet rs=null;
@@ -19,22 +19,20 @@ public class RightDAO {
 	            //2������statement���������ִ��SQL��䣡��
 	            st=conn.createStatement();
 	            //3������sql��ѯ���
-	            String sql="select *from \"right\"";
+	            String sql="select *from \"right\" where \"useName\" = '"+un+"'";
 	            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	            rs=st.executeQuery(sql);
 	           
-	            while(rs.next()) 
+	            if(rs.next()) 
 	            {  //ѭ�����������
 	            	Right temp = new Right(rs.getString("useName"),rs.getString("rolName"),rs.getString("description"));
-	            	cons.add(temp);
-	            	System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
-	            	System.out.println(temp.toString());
+	            	return temp;
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } 
 		
-		return cons;
+		return null;
 	}
 	//����һ����¼
 	public static boolean InsertRight(Right con) 

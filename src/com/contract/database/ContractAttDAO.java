@@ -10,35 +10,38 @@ import java.util.List;
 
 public class ContractAttDAO 
 {
-//��ȡ���ݿ������ж���select������
-public static List<ContractAtt> getContractAtt(){
-	List<ContractAtt> cons = new ArrayList<>();
-	Connection conn=null;
-    Statement st=null;
-    ResultSet rs=null;
-        try {
-            //1����ȡ���Ӷ���
-            conn=Conn.getconn();
-            //2������statement���������ִ��SQL��䣡��
-            st=conn.createStatement();
-            //3������sql��ѯ���
-            String sql="select *from \"contract_attachment\"";
-            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
-            rs=st.executeQuery(sql);
-           
-            while(rs.next()) 
-            {  //ѭ�����������
-            	ContractAtt temp = new ContractAtt(rs.getString("con_id"),rs.getString("fileName"),rs.getString("path"),rs.getInt("type"),rs.getTimestamp("uploadTime"),rs.getInt("del"));
-            	cons.add(temp);
-            	System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
-            	System.out.println(temp.toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
+	 public static ContractAtt getAtt(String cid) 
+	    {
+	    	Connection conn=null;
+			Statement st=null;
+			ResultSet rs=null;
+	    
+			try {
+				//1����ȡ���Ӷ���
+				conn=Conn.getconn();
+				//2������statement���������ִ��SQL��䣡��
+				st=conn.createStatement();
+				//3������sql��ѯ���
+				String sql="select * from \"contract_attachment\" where \"num\" = '"+cid+"'";
+				//4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
+				rs=st.executeQuery(sql);
+	           
+				if(rs.next()) 
+				{  //ѭ�����������
+					
+					ContractAtt temp = new ContractAtt(rs.getString("con_id"),rs.getString("fileName"),rs.getString("path"),rs.getInt("type"),rs.getTimestamp("uploadTime"),rs.getInt("del"));
+					return temp;
+				}
+			} catch (Exception e) {
+	            	e.printStackTrace();
+			} 
+			
+			return null;
+	    	
+	    	
+	    }
 	
-	return cons;
-}
+
 //����һ����¼
 public static boolean InsertContractAtt(ContractAtt con) 
 {

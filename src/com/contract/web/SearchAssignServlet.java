@@ -1,6 +1,7 @@
 package com.contract.web;
 
 import com.contract.database.Contract;
+import com.contract.database.Tools;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -31,24 +32,41 @@ public class SearchAssignServlet extends HttpServlet {
 
         String keyword = (String) jsonObject.get("keyword");
 
-        //List<Contract> list = new ArrayList<>();
+        List<Contract> list = Tools.getDraft(keyword, 0);
 
-        //String str1 = "";
-        //String str2 = "";
-        //String str3 = "";
-        //for (Contract contract : list) {
-        //    str1 = str1 + contract.getId() + " ";
-        //    str2 = str2 + contract.getName() + " ";
-        //    str3 = str3 + contract.getBeginTime() + " ";
-        //}
+        String str1 = "";
+        String str2 = "";
+        String str3 = "";
+        for (Contract contract : list) {
+            str1 = str1 + contract.getId() + " ";
+            str2 = str2 + contract.getName() + " ";
+            str3 = str3 + contract.getBeginTime() + " ";
+        }
 
+        List<String> countersign = Tools.getDistributor("1");
+        List<String> apporve = Tools.getDistributor("3");
+        List<String> sign = Tools.getDistributor("4");
+
+        String str4 = "";
+        String str5 = "";
+        String str6 = "";
+
+        for (String str : countersign) {
+            str4 += str + " ";
+        }
+        for (String str : apporve) {
+            str5 += str + " ";
+        }
+        for (String str : sign) {
+            str6 += str + " ";
+        }
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("ids","1 2 3 4 5");
-        jsonObject1.put("names","合同1a 合同2a 合同3a 合同4a 合同5a");
-        jsonObject1.put("times","2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10");
-        jsonObject1.put("countersign","张三1 李四1 王五1 赵六1 钱七1");
-        jsonObject1.put("approve","张三1 李四1 王五1 钱七1");
-        jsonObject1.put("sign","张三1 李四1 赵六1 钱七1");
+        jsonObject1.put("ids", str1);
+        jsonObject1.put("names", str2);
+        jsonObject1.put("times", str3);
+        jsonObject1.put("countersign", str4);
+        jsonObject1.put("approve", str5);
+        jsonObject1.put("sign", str6);
 
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();

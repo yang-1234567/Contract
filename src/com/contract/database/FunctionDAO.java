@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionDAO {
-	public static List<Function> getFunction(){
-		List<Function> cons = new ArrayList<>();
+	public static Function getFunction(String nm){
+	
 		Connection conn=null;
 	    Statement st=null;
 	    ResultSet rs=null;
@@ -19,22 +19,20 @@ public class FunctionDAO {
 	            //2������statement���������ִ��SQL��䣡��
 	            st=conn.createStatement();
 	            //3������sql��ѯ���
-	            String sql="select *from \"function\"";
+	            String sql="select *from \"function\" where \"num\" = '"+nm+"'";
 	            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	            rs=st.executeQuery(sql);
 	           
-	            while(rs.next()) 
+	            if(rs.next()) 
 	            {  //ѭ�����������
 	            	Function temp = new Function(rs.getString("num"),rs.getString("name"),rs.getString("URL"),rs.getString("description"),rs.getInt("del"));
-	            	cons.add(temp);
-	            	System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
-	            	System.out.println(temp.toString());
+	            	return temp;
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } 
 		
-		return cons;
+		return null;
 	}
 	//����һ����¼
 	public static boolean InsertFunction(Function con) 

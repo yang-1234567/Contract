@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConstractProDAO {
-	public static List<ContractPro> getContractPro(){
-		List<ContractPro> cons = new ArrayList<>();
+	public static ContractPro getContractPro(String cid){
+		
 		Connection conn=null;
 	    Statement st=null;
 	    ResultSet rs=null;
@@ -20,22 +20,21 @@ public class ConstractProDAO {
 	            //2������statement���������ִ��SQL��䣡��
 	            st=conn.createStatement();
 	            //3������sql��ѯ���
-	            String sql="select *from \"contract_process\"";
+	            String sql="select *from \"contract_process\" where \"conNum\" = '"+cid+"'";
 	            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	            rs=st.executeQuery(sql);
 	           
-	            while(rs.next()) 
+	            if(rs.next()) 
 	            {  //ѭ�����������
 	            	ContractPro temp = new ContractPro(rs.getString("conNum"),rs.getString("userName"),rs.getInt("type"),rs.getInt("state"),rs.getString("content"),rs.getTimestamp("time"));
-	            	cons.add(temp);
-	            	System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
-	            	System.out.println(temp.toString());
+	            	return temp;
+	            	
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } 
 		
-		return cons;
+		return null;
 	}
 	//����һ����¼
 	public static boolean InsertContractPro(ContractPro con) 

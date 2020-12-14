@@ -10,8 +10,8 @@ import java.util.List;
 
 public class UserDAO {
 	
-	public static List<User> getUser(){
-		List<User> cons = new ArrayList<>();
+	public static User getUser(String uid){
+		
 		Connection conn=null;
 	    Statement st=null;
 	    ResultSet rs=null;
@@ -21,22 +21,20 @@ public class UserDAO {
 	            //2������statement���������ִ��SQL��䣡��
 	            st=conn.createStatement();
 	            //3������sql��ѯ���
-	            String sql="select *from \"user\"";
+	            String sql="select *from \"user\" where \"name\" = '"+uid+"'";
 	            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	            rs=st.executeQuery(sql);
 	           
 	            while(rs.next()) 
 	            {  //ѭ�����������
 	            	User temp = new User(rs.getString("name"),rs.getString("password"),rs.getInt("del"));
-	            	cons.add(temp);
-	            	System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
-	            	System.out.println(temp.toString());
+	            	return temp;
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } 
 		
-		return cons;
+		return null;
 	}
 	//����һ����¼
 	public static boolean InsertUser(User con) 

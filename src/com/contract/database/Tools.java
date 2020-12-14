@@ -315,7 +315,7 @@ public class Tools {
 		return cons;
 	}
 	
-    public static List<Customer> getCustomers(String cid)//���ݿͻ��ؼ��ַ��ؿͻ��б�
+    public static List<Customer> getCustomers(String cid)//���ݹؼ��ַ��ؿͻ��б�
     {
     	List<Customer> cons = new ArrayList<>();
 		Connection conn=null;
@@ -611,6 +611,73 @@ public class Tools {
     	
     }
     
+    public static List<String> getUFunction(String uid)//ͨ���û�id������Ȩ��
+    {
+    	List<String> cons = new ArrayList<>();
+		Connection conn=null;
+	    Statement st=null;
+	    ResultSet rs=null;
+	    
+	    try {
+	    	//1����ȡ���Ӷ���
+	    	conn=Conn.getconn();
+	    	//2������statement���������ִ��SQL��䣡��
+	        st=conn.createStatement();
+	        //3������sql��ѯ���
+	        
+	        String sql="select \"num\" from \"role_function\"  where \"name\" in (select \"rolName\" from \"right\" where \"useName\" = '"+uid+"')";
+	        //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
+	        rs=st.executeQuery(sql);
+	           
+	       while(rs.next()) 
+	       {  //ѭ�����������
+	          String temp = rs.getString("num");
+	          cons.add(temp);
+	          System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
+	         
+	       }
+	    } catch (Exception e) {
+	            e.printStackTrace();
+	            
+	    } 
+		
+		return cons;
+    	
+    	
+    }
+   
+    public static ContractAtt getAtt(String cid) 
+    {
+    	Connection conn=null;
+		Statement st=null;
+		ResultSet rs=null;
+    
+		try {
+			//1����ȡ���Ӷ���
+			conn=Conn.getconn();
+			//2������statement���������ִ��SQL��䣡��
+			st=conn.createStatement();
+			//3������sql��ѯ���
+			String sql="select * from \"contract_attachment\" where \"num\" = '"+cid+"'";
+			//4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
+			rs=st.executeQuery(sql);
+           
+			if(rs.next()) 
+			{  //ѭ�����������
+				
+				ContractAtt temp = new ContractAtt(rs.getString("con_id"),rs.getString("fileName"),rs.getString("path"),rs.getInt("type"),rs.getTimestamp("uploadTime"),rs.getInt("del"));
+				return temp;
+			}
+		} catch (Exception e) {
+            	e.printStackTrace();
+		} 
+		
+		return null;
+    	
+    	
+    }
+       
+    
     public static void main(String args[]) {
 		
 		/*
@@ -631,7 +698,7 @@ public class Tools {
 		 * str.add("2"); str.add("3"); str.add("4"); str.add("6");
 		 * changeRFunction("operator",str);
 		 */
-    	Register("����","123456");
+    	//Register("����","123456");
     	
 	}
 	

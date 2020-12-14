@@ -1,7 +1,6 @@
 package com.contract.web;
 
-import com.contract.database.Contract;
-import com.contract.database.ContractDAO;
+import com.contract.database.*;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 
 public class DeleteContractServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,14 +25,17 @@ public class DeleteContractServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String operator = (String)jsonObject.get("operator");
+        String operator = (String) jsonObject.get("operator");
         String contractId = (String) jsonObject.get("contractId");
 
-//        Contract contract = new Contract(contractId);
-//        ContractDAO.DeleteContract(contract);
+        Contract contract = Tools.getOneCon(contractId);
+        boolean flag = ContractDAO.DeleteContract(contract);
 
+        if (flag) {
+            LogDAO.InsertLog(new Log(operator, new Timestamp(System.currentTimeMillis()), "Delete contract " + contractId, 1));
+        }
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("result","");
+        jsonObject1.put("result", flag ? 1 : 0);
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

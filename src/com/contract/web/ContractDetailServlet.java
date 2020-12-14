@@ -1,7 +1,9 @@
 package com.contract.web;
 
 import com.contract.database.Contract;
+import com.contract.database.ContractAtt;
 import com.contract.database.ContractDAO;
+import com.contract.database.Tools;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,16 +28,19 @@ public class ContractDetailServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String contractid = (String)jsonObject.get("contractId");
+        String contractId = (String)jsonObject.get("contractId");
         String username = (String)jsonObject.get("username");
 
+        Contract contract = Tools.getOneCon(contractId);
+
+
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("contractName","");
-        jsonObject1.put("customerName","");
-        jsonObject1.put("startTime","");
-        jsonObject1.put("endTime","");
+        jsonObject1.put("contractName",contract.getName());
+        jsonObject1.put("customerName",contract.getCustomer());
+        jsonObject1.put("startTime",contract.getBeginTime());
+        jsonObject1.put("endTime",contract.getEndTime());
         jsonObject1.put("filename","");
-        jsonObject1.put("content","");
+        jsonObject1.put("content",contract.getContent());
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

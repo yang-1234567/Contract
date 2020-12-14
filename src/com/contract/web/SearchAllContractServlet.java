@@ -2,6 +2,7 @@ package com.contract.web;
 
 import com.contract.database.Contract;
 import com.contract.database.ContractDAO;
+import com.contract.database.Tools;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,7 +29,7 @@ public class SearchAllContractServlet extends HttpServlet {
 
         String keyword = (String) jsonObject.get("keyword");
 
-        List<Contract> contracts = ContractDAO.getContract();
+        List<Contract> contracts = Tools.getContracts(keyword);
         String ids = "";
         String names = "";
         String times = "";

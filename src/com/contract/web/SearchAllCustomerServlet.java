@@ -1,5 +1,7 @@
 package com.contract.web;
 
+import com.contract.database.Customer;
+import com.contract.database.Tools;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class SearchAllCustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,11 +28,25 @@ public class SearchAllCustomerServlet extends HttpServlet {
 
         String keyword = (String)jsonObject.get("keyword");
 
+        List<Customer> customers = Tools.getCustomers(keyword);
+
+        String ids = "";
+        String names = "";
+        String address = "";
+        String phones = "";
+
+        for (int i=0;i<customers.size();i++){
+            ids+=(customers.get(i).getId()+" ");
+            names+=(customers.get(i).getName()+" ");
+            address+=(customers.get(i).getAddress()+" ");
+            phones+=(customers.get(i).getTel()+" ");
+        }
+
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("ids","");
-        jsonObject1.put("names","");
-        jsonObject1.put("address","");
-        jsonObject1.put("phones","");
+        jsonObject1.put("ids",ids);
+        jsonObject1.put("names",names);
+        jsonObject1.put("address",address);
+        jsonObject1.put("phones",phones);
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

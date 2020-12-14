@@ -38,10 +38,10 @@ public class AddNewCustomerServlet extends HttpServlet {
         Customer customer = new Customer("", name, address, phone, fax, email, bankName, bankAccount, 1);
         boolean flag = CustomerDAO.InsertCustomer(customer);
 
-//        LogDAO.InsertLog(new Log(operator,new Timestamp(),"Add a new customer:"+name,1));
+        LogDAO.InsertLog(new Log(operator, new Timestamp(System.currentTimeMillis()), "Add a new customer:" + name, 1));
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("result", flag);
+        jsonObject1.put("result", flag ? 1 : 0);
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

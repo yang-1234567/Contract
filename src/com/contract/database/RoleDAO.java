@@ -9,8 +9,8 @@ import java.util.List;
 
 public class RoleDAO {
 	
-	public static List<Role> getRole(){
-		List<Role> cons = new ArrayList<>();
+	public static Role getRole(String nm){
+		
 		Connection conn=null;
 	    Statement st=null;
 	    ResultSet rs=null;
@@ -20,26 +20,52 @@ public class RoleDAO {
 	            //2������statement���������ִ��SQL��䣡��
 	            st=conn.createStatement();
 	            //3������sql��ѯ���
-	            String sql="select *from \"role\"";
+	            String sql="select *from \"role\" where \"name\" = '"+nm+"'";
 	            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	            rs=st.executeQuery(sql);
-	           
-	            while(rs.next()) 
+
+	            if(rs.next()) 
 	            {  //ѭ�����������
 	            	Role temp = new Role(rs.getString("name"),rs.getString("description"),rs.getInt("del"));
-	            	cons.add(temp);
-	            	System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
-	            	System.out.println(temp.toString());
+	            	return temp;
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
-	        } 
-		
-		return cons;
+	        }
+
+		return null;
 	}
-	
+
+
+	public static List<Role> getRoles(){
+
+		Connection conn=null;
+		Statement st=null;
+		ResultSet rs=null;
+		List<Role> roles = new ArrayList<>();
+		try {
+			//1����ȡ���Ӷ���
+			conn=Conn.getconn();
+			//2������statement���������ִ��SQL��䣡��
+			st=conn.createStatement();
+			//3������sql��ѯ���
+			String sql="select *from \"role\"";
+			//4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
+			rs=st.executeQuery(sql);
+
+			if(rs.next())
+			{  //ѭ�����������
+				Role temp = new Role(rs.getString("name"),rs.getString("description"),rs.getInt("del"));
+				roles.add(temp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return roles;
+	}
 	//����һ����¼
-	public static boolean InsertRole(Role con) 
+	public static boolean InsertRole(Role con)
 	{
 		boolean tip = true;
 		Connection conn=null;
@@ -58,7 +84,7 @@ public class RoleDAO {
 	        else {
 	            System.out.println("���ʧ��");
 	        }
-	            
+
 	    } catch (SQLException e) {
 	        tip = false;
 	    	// TODO Auto-generated catch block
@@ -67,7 +93,7 @@ public class RoleDAO {
 	    return tip;
 	}
 	//ɾ��һ����¼(��id)
-	public static boolean DeleteRole(Role con) 
+	public static boolean DeleteRole(Role con)
 	{
 		boolean tip = true;
 		Connection conn=null;
@@ -84,13 +110,13 @@ public class RoleDAO {
 		        else{
 		            System.out.println("ɾ��ʧ��");
 		        }
-		            
+
 		    } catch (SQLException e) {
 		       tip = false;
 		    	e.printStackTrace();
 		    }
 		return tip;
-		
+
 	}
 	//����һ����¼(��id)
 	public static boolean UpdateRole(Role con) {

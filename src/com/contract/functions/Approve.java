@@ -135,6 +135,9 @@ public class Approve {
 		this.tip = tip;
 	}
 
+	public boolean getTip() {
+		return this.tip;
+	}
 	public static void main(String args[]) {
 		
 		Approve approve = new Approve("1211085950","����","no",0);

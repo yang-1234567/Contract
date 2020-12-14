@@ -10,8 +10,8 @@ import java.util.List;
 
 public class LogDAO {
 	
-	public static List<Log> getLog(){
-		List<Log> cons = new ArrayList<>();
+	public static Log getLog(String in){
+		
 		Connection conn=null;
 	    Statement st=null;
 	    ResultSet rs=null;
@@ -21,22 +21,20 @@ public class LogDAO {
 	            //2������statement���������ִ��SQL��䣡��
 	            st=conn.createStatement();
 	            //3������sql��ѯ���
-	            String sql="select *from \"log\"";
+	            String sql="select *from \"log\" where \"user_id\" = '"+in+"'";
 	            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	            rs=st.executeQuery(sql);
 	           
-	            while(rs.next()) 
+	            if(rs.next()) 
 	            {  //ѭ�����������
 	            	Log temp = new Log(rs.getString("user_id"),rs.getTimestamp("time"),rs.getString("content"),rs.getInt("del"));
-	            	cons.add(temp);
-	            	System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
-	            	System.out.println(temp.toString());
+	            	return temp;
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } 
 		
-		return cons;
+		return null;
 	}
 	//����һ����¼
 	public static boolean InsertLog(Log con) 

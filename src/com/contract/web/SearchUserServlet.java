@@ -1,5 +1,8 @@
 package com.contract.web;
 
+import com.contract.database.Right;
+import com.contract.database.RightDAO;
+import com.contract.database.UserDAO;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,7 +25,6 @@ public class SearchUserServlet extends HttpServlet {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("usernames","");

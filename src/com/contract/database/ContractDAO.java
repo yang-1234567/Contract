@@ -10,8 +10,8 @@ import java.util.List;
 
 public class ContractDAO {
 //select����������contract��List
-	public static List<Contract> getContract(){
-		List<Contract> cons = new ArrayList<>();
+	public static Contract getContract(String cid){
+		
 		Connection conn=null;
 	    Statement st=null;
 	    ResultSet rs=null;
@@ -21,22 +21,20 @@ public class ContractDAO {
 	            //2������statement���������ִ��SQL��䣡��
 	            st=conn.createStatement();
 	            //3������sql��ѯ���
-	            String sql="select *from \"contract\"";
+	            String sql="select *from \"contract\" where \"num\" = '"+cid+"'";
 	            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	            rs=st.executeQuery(sql);
 	           
-	            while(rs.next()) 
+	            if(rs.next()) 
 	            {  //ѭ�����������
 	            	Contract temp = new Contract(rs.getString("num"),rs.getString("name"),rs.getString("user_id"),rs.getString("customer"),rs.getString("content"),rs.getDate("beginTime"),rs.getDate("endTime"),rs.getInt("del"));
-	            	cons.add(temp);
-	            	System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
-	            	System.out.println(temp.toString());
+	            	return temp;
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } 
 		
-		return cons;
+		return null;
 		
 		
 	}

@@ -1,5 +1,7 @@
 package com.contract.web;
 
+import com.contract.database.Log;
+import com.contract.database.LogDAO;
 import com.contract.functions.Approve;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 
 public class ApproveServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -24,16 +27,25 @@ public class ApproveServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String operator = (String)jsonObject.get("operator");
-        String contractId = (String)jsonObject.get("contractId");
-        String type = (String)jsonObject.get("type");
-        String approve = (String)jsonObject.get("approve");
-        String suggestion = (String)jsonObject.get("suggestion");
+        String operator = (String) jsonObject.get("operator");
+        String contractId = (String) jsonObject.get("contractId");
+        String type = (String) jsonObject.get("type");
+        String approve = (String) jsonObject.get("approve");
+        String suggestion = (String) jsonObject.get("suggestion");
 
-        new Approve(contractId,operator,suggestion,Integer.parseInt(approve));
+        boolean flag = new Approve(contractId, operator, suggestion, Integer.parseInt(approve)).getTip();
+
+        if(flag){
+            if (approve.equals("1")) {
+                LogDAO.InsertLog(new Log(operator, new Timestamp(System.currentTimeMillis()), "Approve contract " + contractId, 1));
+            } else {
+                LogDAO.InsertLog(new Log(operator, new Timestamp(System.currentTimeMillis()), "Reject contract " + contractId, 1));
+            }
+        }
+
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("resule","");
+        jsonObject1.put("resule", flag ? 1 : 0);
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

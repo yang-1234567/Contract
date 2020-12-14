@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAO {
-	public static List<Customer> getCustomer(){
-		List<Customer> cons = new ArrayList<>();
+	public static Customer getCustomer(String cid){
+		
 		Connection conn=null;
 	    Statement st=null;
 	    ResultSet rs=null;
@@ -19,22 +19,20 @@ public class CustomerDAO {
 	            //2������statement���������ִ��SQL��䣡��
 	            st=conn.createStatement();
 	            //3������sql��ѯ���
-	            String sql="select *from \"customer\"";
+	            String sql="select *from \"customer\" where \"num\" = '"+cid+"'";
 	            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	            rs=st.executeQuery(sql);
 	           
-	            while(rs.next()) 
+	            if(rs.next()) 
 	            {  //ѭ�����������
 	            	Customer temp = new Customer(rs.getString("num"),rs.getString("name"),rs.getString("address"),rs.getString("tel"),rs.getString("fax"),rs.getString("code"),rs.getString("bank"),rs.getString("account"),rs.getInt("del"));
-	            	cons.add(temp);
-	            	System.out.println("��ǰ��ȡ��"+cons.size()+"�С�");
-	            	System.out.println(temp.toString());
+	            	return temp;
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } 
 		
-		return cons;
+		return null;
 	}
 	//����һ����¼
 	public static boolean InsertCustomer(Customer con) 

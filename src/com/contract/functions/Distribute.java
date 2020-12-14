@@ -22,6 +22,7 @@ public class Distribute {
 	private List<String> signName = new ArrayList<>();
 	private String conNum;//��ͬId
 	private boolean tip = true;
+	public boolean getTip(){return tip;};
 	public Distribute(List<String> s1,List<String> s2, List<String> s3,String cNum) 
 	{
 		
