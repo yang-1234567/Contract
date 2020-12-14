@@ -21,14 +21,15 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         InputStream inputStream = req.getInputStream();
-        byte[] b  = inputStream.readAllBytes();
-        String requestString = new String(b,"UTF-8");
+        byte[] b = inputStream.readAllBytes();
+        String requestString = new String(b, "UTF-8");
+        String username = "";
         boolean flag = false;
         try {
             JSONObject jsonObject = (JSONObject) new JSONParser().parse(requestString);
-            String username = (String) jsonObject.get("username");
+            username = (String) jsonObject.get("username");
             String password = (String) jsonObject.get("password");
-            flag = Tools.Login(username,password);
+            flag = Tools.Login(username, password);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -37,11 +38,11 @@ public class LoginServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
         JSONObject jsonObject = new JSONObject();
-        if (flag ){
-            jsonObject.put("result","1");
-            jsonObject.put("rights","0 1 2 3 4 6 7 8 9 10 11");
+        if (flag) {
+            jsonObject.put("result", "1");
+            jsonObject.put("rights", Tools.getRFunction(Tools.getURole(username)));
         } else {
-            jsonObject.put("result","0");
+            jsonObject.put("result", "0");
         }
         writer.write(jsonObject.toJSONString());
     }

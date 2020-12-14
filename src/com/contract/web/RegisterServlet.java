@@ -18,14 +18,14 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         InputStream inputStream = req.getInputStream();
-        byte[] b  = inputStream.readAllBytes();
-        String requestString = new String(b,"UTF-8");
+        byte[] b = inputStream.readAllBytes();
+        String requestString = new String(b, "UTF-8");
         boolean flag = false;
         try {
             JSONObject jsonObject = (JSONObject) new JSONParser().parse(requestString);
             String username = (String) jsonObject.get("username");
             String password = (String) jsonObject.get("password");
-            flag = Tools.Register(username,password);
+            flag = Tools.Register(username, password);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -33,11 +33,9 @@ public class RegisterServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
         JSONObject jsonObject = new JSONObject();
-        if (flag){
-            jsonObject.put("result","1");
-        } else {
-            jsonObject.put("result","0");
-        }
+
+        jsonObject.put("result", flag ? 1 : 0);
+
         writer.write(jsonObject.toJSONString());
     }
 }
