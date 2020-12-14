@@ -24,9 +24,9 @@ public class FenpeiContractServlet extends HttpServlet {
         }
 
         String operator = (String)jsonObject.get("operator");
-        String contractid = (String)jsonObject.get("contractid");
+        String contractid = (String)jsonObject.get("contractId");
         String countersign = (String) jsonObject.get("countersign");
-        String exam_and_approve = (String) jsonObject.get("exam_and_approve");
+        String exam_and_approve = (String) jsonObject.get("approve");
         String sign = (String) jsonObject.get("sign");
 
 

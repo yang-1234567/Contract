@@ -23,9 +23,9 @@ public class UpdateRoleServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String operator = (String)jsonObject.get("opertaor");
+        String operator = (String)jsonObject.get("operator");
         String roleName = (String) jsonObject.get("roleName");
-        String roles = (String) jsonObject.get("roles");
+        String roles = (String) jsonObject.get("rights");
 
 
         JSONObject jsonObject1 = new JSONObject();

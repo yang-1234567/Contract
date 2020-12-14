@@ -91,7 +91,7 @@
             //     selection = parseInt(selection);
             js_send = {
                 "keyword": keyword,
-                "state": selection
+                "process": selection
             }
             // }
             let xhttp = new XMLHttpRequest();
@@ -156,7 +156,7 @@
 
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.open("POST", "http://localhost:8888/Contract/searchContractByProcessServlet", true);
             xhttp.send(JSON.stringify(js_send));
         }
 

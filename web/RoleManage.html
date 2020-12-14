@@ -99,7 +99,7 @@
                 }
             }
         };
-        xhttp.open("GET", "http://localhost:8888/Contract/searchAssignServlet", true);
+        xhttp.open("GET", "http://localhost:8888/Contract/serchAllRole", true);
         xhttp.send();
 
 
@@ -147,7 +147,7 @@
                                 }
                             }
                         }
-                        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                        xhttp.open("POST", "http://localhost:8888/Contract/addNewRoleServlet", true);
                         xhttp.send(JSON.stringify(js_send));
                     }
                 }
@@ -197,7 +197,7 @@
                             }
                         }
                     }
-                    xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                    xhttp.open("POST", "http://localhost:8888/Contract/deleteRoleServlet", true);
                     xhttp.send(JSON.stringify(js_send));
                 }
             });

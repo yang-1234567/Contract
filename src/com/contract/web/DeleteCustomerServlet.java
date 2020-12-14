@@ -24,7 +24,7 @@ public class DeleteCustomerServlet extends HttpServlet {
         }
 
         String operator = (String)jsonObject.get("operator");
-        String customerid = (String)jsonObject.get("customerid");
+        String customerid = (String)jsonObject.get("customerId");
 
 
         JSONObject jsonObject1 = new JSONObject();

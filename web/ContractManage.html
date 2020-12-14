@@ -133,7 +133,7 @@
                     }
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.open("POST", "http://localhost:8888/Contract/searchAllContractServlet", true);
             xhttp.send(JSON.stringify(js_send));
 
         }
@@ -221,7 +221,7 @@
                         }
 
                     };
-                    xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                    xhttp.open("POST", "http://localhost:8888/Contract/deleteContractServlet", true);
                     xhttp.send(JSON.stringify(js_send));
 
                 }

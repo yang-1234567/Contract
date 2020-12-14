@@ -48,7 +48,7 @@
                 $("p:eq(0)").html(js_receive.content);
             }
         };
-        xhttp.open("POST", "http://localhost:8888/Contract/draftServlet", true);
+        xhttp.open("POST", "http://localhost:8888/Contract/contractDetailServlet", true);
         xhttp.send('{"contractId":' + getCookie("contractId") + '}');
 
         $(document).on('click', '#download', function () {

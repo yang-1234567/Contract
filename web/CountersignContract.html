@@ -86,7 +86,7 @@
                 keyword = "";
             }
             let js_send = {
-                "username":getCookie("curUsername"),
+                "username": getCookie("curUsername"),
                 "keyword": keyword,
                 "process": 1
             };
@@ -110,9 +110,8 @@
 
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.open("POST", "http://localhost:8888/Contract/searchContractByProcessServlet", true);
             xhttp.send(JSON.stringify(js_send));
-}
         }
 
         search();
@@ -159,13 +158,13 @@
                             "contractId": value,
                             "username": getCookie("curUsername"),
                             "type": 1,
-                            "suggestion":$('#suggestion').val()
+                            "suggestion": $('#suggestion').val()
                         }
                         let xhttp = new XMLHttpRequest();
                         xhttp.onreadystatechange = function () {
                             if (this.readyState === 4 && this.status === 200) {
                                 let js_receive = JSON.parse(this.responseText);
-                                if(js_receive.result==='1'){
+                                if (js_receive.result === '1') {
                                     $("#countersign_table").eq(0).find("tr").each(function () {
                                         if ($(this).eq(0).find("button").val() === value) {
                                             $(this).remove();
@@ -177,7 +176,7 @@
                                     });
                                     layer.close(index);
                                     return true;
-                                }else{
+                                } else {
                                     layer.alert('会签失败！', {
                                         title: '提示框',
                                         icon: 1,
@@ -186,7 +185,7 @@
 
                             }
                         };
-                        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                        xhttp.open("POST", "http://localhost:8888/Contract/conterSignServlet", true);
                         xhttp.send(JSON.stringify(js_send));
 
                     }

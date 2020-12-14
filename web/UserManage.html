@@ -104,7 +104,7 @@
                 }
             }
         };
-        xhttp.open("GET", "http://localhost:8888/Contract/searchAssignServlet", true);
+        xhttp.open("POST", "http://localhost:8888/Contract/searchUserServlet", true);
         xhttp.send();
 
         let xhttp = new XMLHttpRequest();
@@ -118,7 +118,7 @@
                 }
             }
         };
-        xhttp.open("GET", "http://localhost:8888/Contract/searchAssignServlet", true);
+        xhttp.open("GET", "http://localhost:8888/Contract/searchAllRolesServlet", true);
         xhttp.send();
 
         /***判断用户添加文本**/
@@ -175,7 +175,7 @@
                                 }
                             }
                         };
-                        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                        xhttp.open("POST", "http://localhost:8888/Contract/", true);
                         xhttp.send(JSON.stringify(js_send));
 
                     }
@@ -217,7 +217,7 @@
                             }
                         }
                     };
-                    xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                    xhttp.open("POST", "http://localhost:8888/Contract/deleteUserServlet", true);
                     xhttp.send(JSON.stringify(js_send));
 
                 }
@@ -283,7 +283,7 @@
                                         }
                                     }
                                 };
-                                xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                                xhttp.open("POST", "http://localhost:8888/Contract/updateUserServlet", true);
                                 xhttp.send(JSON.stringify(js_send));
 
                             }
@@ -293,7 +293,7 @@
                     });
                 }
             }
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.open("POST", "http://localhost:8888/Contract/searchUserInformationServlet", true);
             xhttp.send(JSON.stringify(js_send));
 
 

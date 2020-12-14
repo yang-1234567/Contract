@@ -92,7 +92,7 @@
             let js_send = {
                 "username": getCookie("curUsername"),
                 "keyword": keyword,
-                "state": 4
+                "process": 4
             };
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -113,7 +113,7 @@
                     }
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.open("POST", "http://localhost:8888/Contract/searchContractByProcessServlet", true);
             xhttp.send(JSON.stringify(js_send));
         }
 
@@ -189,7 +189,7 @@
 
                             }
                         };
-                        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+                        xhttp.open("POST", "http://localhost:8888/Contract/conterSignServlet", true);
                         xhttp.send(JSON.stringify(js_send));
                     }
                 }

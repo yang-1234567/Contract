@@ -24,7 +24,7 @@ public class ContractDetailServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String contractid = (String)jsonObject.get("contracid");
+        String contractid = (String)jsonObject.get("contractId");
         String username = (String)jsonObject.get("username");
 
 

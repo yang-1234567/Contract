@@ -23,7 +23,7 @@ public class ConterSignServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String contractid = (String)jsonObject.get("contracid");
+        String contractid = (String)jsonObject.get("contracId");
         String operator = (String)jsonObject.get("operator");
         String type = (String)jsonObject.get("type");
         String suggestion = (String)jsonObject.get("suggestion");

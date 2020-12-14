@@ -230,7 +230,7 @@
                     } else {
                         //提交数据
                         let js_send = {
-                            "operator":getCookie("curUsername")
+                            "operator":getCookie("curUsername"),
                             "contractId": value,
                             "countersign": countersign,
                             "approve": approve,
@@ -259,7 +259,7 @@
                                 }
                             }
                         };
-                        xhttp.open("POST", "http://localhost:8888/Contract/draftServlet", true);
+                        xhttp.open("POST", "http://localhost:8888/Contract/fenpeiContractServlet", true);
                         xhttp.send(JSON.stringify(js_send));
 
                     }

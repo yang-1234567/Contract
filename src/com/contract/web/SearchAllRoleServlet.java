@@ -24,7 +24,7 @@ public class SearchAllRoleServlet extends HttpServlet {
         }
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("rolename","");
+        jsonObject1.put("roleName","");
         jsonObject1.put("description","");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();

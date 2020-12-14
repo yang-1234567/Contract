@@ -26,7 +26,7 @@ public class SearchContractByProcessServlet extends HttpServlet {
 
         String username = (String)jsonObject.get("username");
         String process = (String) jsonObject.get("process");
-        String keyword = (String) jsonObject.get("key_word");
+        String keyword = (String) jsonObject.get("keyword");
 
 
         JSONObject jsonObject1 = new JSONObject();

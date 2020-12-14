@@ -97,7 +97,9 @@
             }
 
             let js_send = {
-                "roleName": getCookie("roleName")
+                "operator":getCookie("curUsername"),
+                "roleName": getCookie("roleName"),
+                "rights": rights
             }
 
             let xhttp = new XMLHttpRequest();
@@ -107,13 +109,13 @@
                     if (js_receive.result === '1') {
                         layer.alert("修改成功");
                         history.go(-1);
-                    }else{
+                    } else {
                         layer.alert("修改失败");
                     }
 
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.open("POST", "http://localhost:8888/Contract/updateRoleServlet", true);
             xhttp.send(JSON.stringify(js_send));
 
         })
