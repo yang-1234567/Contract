@@ -1,5 +1,6 @@
 package com.contract.web;
 
+import com.contract.database.Tools;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -25,14 +26,16 @@ public class SearchCounterSignServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-
+        String username = (String) jsonObject.get("username");
         String keyword = (String) jsonObject.get("keyword");
-        String state = (String) jsonObject.get("state");
+        String process = (String) jsonObject.get("process");
+
+        Tools.getUDraft(keyword, Integer.parseInt(process), username);
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("ids","1 2 3 4 5");
-        jsonObject1.put("names","合同1a 合同2a 合同3a 合同4a 合同5a");
-        jsonObject1.put("times","2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10");
+        jsonObject1.put("ids", "1 2 3 4 5");
+        jsonObject1.put("names", "合同1a 合同2a 合同3a 合同4a 合同5a");
+        jsonObject1.put("times", "2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10");
 
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();

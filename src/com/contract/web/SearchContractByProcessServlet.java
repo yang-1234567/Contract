@@ -31,7 +31,7 @@ public class SearchContractByProcessServlet extends HttpServlet {
         String process = (String) jsonObject.get("process");
         String keyword = (String) jsonObject.get("keyword");
 
-        List<Contract> list = Tools.getDraft(keyword, Integer.parseInt(process));
+        List<Contract> list = Tools.getUDraft(keyword, Integer.parseInt(process), username);
 
         String str1 = "";
         String str2 = "";
