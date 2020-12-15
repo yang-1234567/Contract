@@ -14,7 +14,7 @@ import com.contract.database.Contract;
 import com.contract.database.ContractPro;
 import com.contract.database.ContractState;
 import com.contract.database.ContractStateDAO;
-
+import com.contract.database.ContractDAO;
 public class Distribute {
 
 	private List<String> conSignName= new ArrayList<>();
@@ -30,13 +30,13 @@ public class Distribute {
 		//s1Ϊ��ǩ��Ա�б�s2Ϊ������Ա�б�s3Ϊǩ����Ա�б�
 		
 		//��ǩ
-		
+
 		for(int i = 0;i< s1.size();i++) 
   	   	{
   		    Timestamp time1 = new Timestamp(System.currentTimeMillis());
  				ContractPro conn = new ContractPro(cNum,s1.get(i),1,0,"wocao",time1);
  				if(ConstractProDAO.InsertContractPro(conn)== false)tip = false;
- 				
+
   	   	}
 		
 		//����
@@ -46,7 +46,7 @@ public class Distribute {
   		    Timestamp time1 = new Timestamp(System.currentTimeMillis());
  				ContractPro conn = new ContractPro(cNum,s2.get(i),3,0,"wocao",time1);
  				if(ConstractProDAO.InsertContractPro(conn)== false)tip = false;
- 				
+
   	   	}
 		
 		//ǩ��
@@ -55,9 +55,12 @@ public class Distribute {
   		    Timestamp time1 = new Timestamp(System.currentTimeMillis());
  				ContractPro conn = new ContractPro(cNum,s3.get(i),4,0,"wocao",time1);
  				if(ConstractProDAO.InsertContractPro(conn)== false)tip = false;
- 				
+
   	   	}
-		
+  	   	Timestamp time1 = new Timestamp(System.currentTimeMillis());
+		Contract cont = ContractDAO.getContract(cNum);
+		ContractState constate = new ContractState(1,time1,1,cont.getName(),cNum);
+		ContractStateDAO.updateContractState(constate);
 		
 	}
 	

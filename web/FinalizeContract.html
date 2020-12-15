@@ -17,16 +17,23 @@
 <div id="finalize_menu" style="display: none">
     <div class="">
         <ul class="Add_Manager_style clearfix">
-            <li><label class="label_name">合同名称</label><input name="合同名称" type="text" class="text finalize"
-                                                             style=" width:200px; "/></li>
-            <li><label class="label_name">客户</label><input name="客户" type="text" class="text  finalize"
-                                                           style=" width:200px; "/></li>
-            <li><label class="label_name">开始时间</label> <input name="开始时间" class="inline laydate-icon finalize"
-                                                              id="start" style="width:200px; margin-left:10px"/></li>
-            <li><label class="label_name">结束时间</label><input name="结束时间" class="inline laydate-icon finalize" id="time1"
-                                                             style="width:200px; margin-left:10px"/></li>
-            <li><label class="label_name">附件</label><input name="附件" class="inline finalize" type="file" id="file"
-                                                           style="width:200px; margin-left:10px"/>
+            <li><label class="label_name">合同名称</label>
+                <input name="合同名称" type="text" class="text finalize" style=" width:200px; "/>
+            </li>
+            <li><label class="label_name">客户</label>
+                <input name="客户" type="text" class="text  finalize" style=" width:200px; "/>
+            </li>
+            <li><label class="label_name">开始时间</label>
+                <input name="开始时间" class="inline laydate-icon finalize" id="start"
+                       style="width:200px; margin-left:10px"/>
+            </li>
+            <li><label class="label_name">结束时间</label>
+                <input name="结束时间" class="inline laydate-icon finalize" id="time1"
+                       style="width:200px; margin-left:10px"/>
+            </li>
+            <li><label class="label_name">附件</label>
+                <input name="附件" class="inline finalize" type="hidden" id="file" style="width:200px; margin-left:10px"/>
+                <input type="button" class="btn-primary" value="重新上传"/>
             </li>
         </ul>
     </div>
@@ -116,39 +123,42 @@
 
     $(document).ready(function () {
 
-        function search(){
+        function search() {
             let keyword = $("#keyword").val();
-            if(keyword ===undefined){
-                keyword="";
+            if (keyword === undefined) {
+                keyword = "";
             }
             //请求数据
             let js_send = {
+                "username": getCookie("curUser"),
                 "keyword": keyword
             };
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    if (js_receive.num != 0) {
+                        let ids = js_receive.ids.split(" ");
+                        let names = js_receive.names.split(" ");
+                        let times = js_receive.times.split(" ");
+                        //初始化查询列表
+                        for (var i = 0; i < ids.length; i++) {
+                            let str;
+                            str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
+                                '<td>' + times[i] + '</td>' +
+                                '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary view_suggestion_btn">查看会签意见</button></td>' +
+                                '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary finalize_btn">定稿</button></td> </tr>';
+                            //追加到table中
+                            $("#finalize_table").append(str);
+                        }
+                    }
 
-
-            //返回的数据
-            let response;
-            // let js_receive = JSON.parse(response);
-            let js_receive = {
-                "ids": "1 2 3 4 5",
-                "names": "合同1 合同2 合同3 合同4 合同5",
-                "times": "2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10"
+                }
             };
-            let ids = js_receive.ids.split(" ");
-            let names = js_receive.names.split(" ");
-            let times = js_receive.times.split(" ");
-            //初始化查询列表
-            for (var i = 0; i < ids.length; i++) {
-                let str;
-                str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
-                    '<td>' + times[i] + '</td>' +
-                    '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary view_suggestion_btn">查看会签意见</button></td>' +
-                    '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary finalize_btn">定稿</button></td> </tr>';
-                //追加到table中
-                $("#finalize_table").append(str);
-            }
+            xhttp.open("POST", "http://localhost:8888/Contract/search", true);
+            xhttp.send(JSON.stringify(js_send));
+
         }
+
         search();
         //查询
         $(document).on('click', '.btn_search', function () {
@@ -175,27 +185,37 @@
             $("#suggestion").val("");
             $("#selection").children().remove();
 
-            let js_send;
+            let js_send = {
+                "contractId": id
+            };
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+                    let names = js_receive.usernames.split(' ');
+                    let str = '<option selected value="">-请选择-</option>';
+                    for (let i = 0; i < names.length; i++) {
+                        let name = names[i];
+                        str += '<option>' + name + '</option>';
+                    }
+                    $("#selection").append(str);
 
-            let str = '<option selected value="">-请选择-</option>';
-            for (let i = 0; i < id; i++) {
-                let name = '张三' + i;
-                str += '<option>' + name + '</option>';
-            }
-            $("#selection").append(str);
-            //获取合同信息
-            layer.open({
-                type: 1,
-                title: '查看会签意见',
-                shadeClose: true, //点击遮罩关闭层
-                area: ['500px', ''],
-                content: $('#view_suggestion'),
-                btn: ['确认'],
-                yes: function (index, layero) {
+                    //获取合同信息
+                    layer.open({
+                        type: 1,
+                        title: '查看会签意见',
+                        shadeClose: true, //点击遮罩关闭层
+                        area: ['500px', ''],
+                        content: $('#view_suggestion'),
+                        btn: ['确认'],
+                        yes: function (index, layero) {
                             layer.close(index);
                         }
-            });
-
+                    });
+                }
+            };
+            xhttp.open("POST", "http://localhost:8888/Contract/search", true);
+            xhttp.send(JSON.stringify(js_send));
         });
 
         $(document).on('click', '.btn_search_suggestion', function () {
@@ -204,7 +224,21 @@
             if (user === "") {
                 layer.alert("请选择会签人");
             } else {
-                $("#suggestion").val(id + user);
+                let js_send = {
+                    "contractId": id,
+                    "username": user
+                };
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        let js_receive = JSON.parse(this.responseText);
+
+                        $("#suggestion").val(js_receive.content);
+                    }
+                };
+                xhttp.open("POST", "http://localhost:8888/Contract/search", true);
+                xhttp.send(JSON.stringify(js_send));
+
             }
 
         });
@@ -212,7 +246,20 @@
         $(document).on('click', '.finalize_btn', function () {
             $(this).parent().parent().find("a:eq(0)").html();
             //获取合同信息
-
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+                    $("input:eq(0)").val(js_receive.contractName);
+                    $("input:eq(1)").val(js_receive.customerName);
+                    $("input:eq(2)").val(js_receive.startTime);
+                    $("input:eq(3)").val(js_receive.endTime);
+                    $("input:eq(4)").append('<a id="download">' + js_receive.filename + '</a>');
+                    $("textarea:eq(0)").html(js_receive.content);
+                }
+            };
+            xhttp.open("POST", "http://localhost:8888/Contract/contractDetailServlet", true);
+            xhttp.send('{"contractId":' + getCookie("contractId") + '}');
             layer.open({
                 type: 1,
                 title: '定稿合同',
@@ -242,7 +289,7 @@
             });
 
         });
-        
+
     })
 
 </script>
