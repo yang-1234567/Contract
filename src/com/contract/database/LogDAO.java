@@ -130,6 +130,6 @@ public class LogDAO {
 	public static void main(String[] args) {
 		Timestamp time1 = new Timestamp(System.currentTimeMillis());
 		Log conn = new Log("1",time1,"niubi",0);
-		getLog();
+		//getLog();
 	}
 }

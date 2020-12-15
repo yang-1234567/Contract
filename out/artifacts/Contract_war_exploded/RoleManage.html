@@ -82,15 +82,25 @@
 <script src="js/cookie.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        for (let i = 0; i < 2; i++) {
-            let name = '管理员'+i;
-            let des = '这是管理员';
-            let str = '<tr><td>' + name + '</td>' +
-                '<td>' + des + '</td>' +
-                '<td><a class="btn btn-info rights_btn" href="RightSetting.html">权限</a>' +
-                '<button value="' + name + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
-            $("#role_table").append(str);
-        }
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let js_receive = JSON.parse(this.responseText);
+                let names = js_receive.roleName.split(" ");
+                let des = js_receive.description.split(" ");
+                for (let i = 0; i < names.length; i++) {
+
+                    let str = '<tr><td>' + names[i] + '</td>' +
+                        '<td>' + des[i] + '</td>' +
+                        '<td><a class="btn btn-info rights_btn" href="RightSetting.html">权限</a>' +
+                        '<button value="' + names[i] + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
+                    $("#role_table").append(str);
+                }
+            }
+        };
+        xhttp.open("GET", "http://localhost:8888/Contract/serchAllRole", true);
+        xhttp.send();
 
 
         $('#Add_Roles_btn').on('click', function () {
@@ -113,16 +123,32 @@
                             icon: 0,
                         });
                     } else {
-                        let str = '<tr><td>' + name + '</td>' +
-                            '<td>' + des + '</td>' +
-                            '<td><a class="btn btn-info rights_btn" href="RightSetting.html">权限</a>' +
-                            '<button value="' + name + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
-                        $("#role_table").append(str);
-                        layer.alert('添加成功！', {
-                            title: '提示框',
-                            icon: 1,
-                        });
-                        layer.close(index);
+                        let js_send = {
+                            "operator": getCookie("curUsername"),
+                            "roleName": name,
+                            "description": des
+                        }
+
+                        let xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                let js_receive = JSON.parse(this.responseText);
+                                if (js_receive.result === '1') {
+                                    let str = '<tr><td>' + name + '</td>' +
+                                        '<td>' + des + '</td>' +
+                                        '<td><a class="btn btn-info rights_btn" href="RightSetting.html">权限</a>' +
+                                        '<button value="' + name + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
+                                    $("#role_table").append(str);
+                                    layer.alert('添加成功！', {
+                                        title: '提示框',
+                                        icon: 1,
+                                    });
+                                    layer.close(index);
+                                }
+                            }
+                        }
+                        xhttp.open("POST", "http://localhost:8888/Contract/addNewRoleServlet", true);
+                        xhttp.send(JSON.stringify(js_send));
                     }
                 }
             });
@@ -141,13 +167,38 @@
                 content: "你确定要删除吗",
                 btn: ['确认', '取消'],
                 yes: function (index, layero) {
-                    $("#role_table").find(".delete_btn").each(function (){
-                        if($(this).val()===name){
-                            $(this).parent().parent().remove();
-                            return;
+                    let js_send = {
+                        "operator": getCookie("curUsername"),
+                        "roleName": name,
+                    }
+
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            let js_receive = JSON.parse(this.responseText);
+                            if (js_receive.result === '1') {
+                                $("#role_table").find(".delete_btn").each(function () {
+                                    if ($(this).val() === name) {
+                                        $(this).parent().parent().remove();
+                                        return;
+                                    }
+                                })
+
+                                layer.alert('删除成功！', {
+                                    title: '提示框',
+                                    icon: 1,
+                                });
+                                layer.close(index);
+                            }else {
+                                layer.alert('删除失败！', {
+                                    title: '提示框',
+                                    icon: 1,
+                                });
+                            }
                         }
-                    })
-                    layer.close(index);
+                    }
+                    xhttp.open("POST", "http://localhost:8888/Contract/deleteRoleServlet", true);
+                    xhttp.send(JSON.stringify(js_send));
                 }
             });
 

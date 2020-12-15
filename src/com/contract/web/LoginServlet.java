@@ -40,6 +40,7 @@ public class LoginServlet extends HttpServlet {
         JSONObject jsonObject = new JSONObject();
         if (flag) {
             jsonObject.put("result", "1");
+            jsonObject.put("role",Tools.getURole(username));
             jsonObject.put("rights", Tools.getRFunction(Tools.getURole(username)));
         } else {
             jsonObject.put("result", "0");

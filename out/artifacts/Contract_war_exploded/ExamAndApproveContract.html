@@ -95,28 +95,31 @@
                 keyword = "";
             }
             let js_send = {
+                "username":getCookie("curUsername"),
                 "keyword": keyword,
-                "state": 3
+                "process": 3
             };
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
 
-            //返回的数据
-            let response;
-            // let js_receive = JSON.parse(response);
-            let js_receive = {
-                "ids": "1 2 3 4 5",
-                "names": "合同1 合同2 合同3 合同4 合同5",
-                "times": "2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10"
+                    let ids = js_receive.ids.split(" ");
+                    let names = js_receive.names.split(" ");
+                    let times = js_receive.times.split(" ");
+                    //初始化查询列表
+
+                    for (var i = 0; i < ids.length; i++) {
+                        var str = "";//定义用于拼接的字符串
+                        str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
+                            '<td>' + times[i] + '</td>' +
+                            '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary approve_btn">审批</button> </td> </tr>';
+                        $("#approve_table").append(str);
+                    }
+                }
             };
-            let ids = js_receive.ids.split(" ");
-            let names = js_receive.names.split(" ");
-            let times = js_receive.times.split(" ");
-            for (var i = 0; i < ids.length; i++) {
-                var str = "";//定义用于拼接的字符串
-                str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
-                    '<td>' + times[i] + '</td>' +
-                    '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary approve_btn">审批</button> </td> </tr>';
-                $("#approve_table").append(str);
-            }
+            xhttp.open("POST", "http://localhost:8888/Contract/searchContractByProcessServlet", true);
+            xhttp.send(JSON.stringify(js_send));
         }
 
         search();
@@ -161,24 +164,41 @@
                         });
                         return false;
                     } else {
-                        $("#approve_table").eq(0).find("tr").each(function () {
-                            if ($(this).eq(0).find("button").val() === value) {
-                                $(this).remove();
-                            }
-                        });
                         var group1 = $("[name='form-field-radio']").filter(":checked");
                         let js_send = {
                             "contractId": value,
-                            "content": $('#suggestion').val(),
+                            "username": getCookie("curUsername"),
+                            "type": 3,
                             "pass": group1.val(),
-                            "state": 3,
+                            "suggestion":$('#suggestion').val()
                         }
+                        let xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                let js_receive = JSON.parse(this.responseText);
+                                if(js_receive.result==='1'){
+                                    $("#approve_table").eq(0).find("tr").each(function () {
+                                        if ($(this).eq(0).find("button").val() === value) {
+                                            $(this).remove();
+                                        }
+                                    });
+                                    layer.alert('已审批！', {
+                                        title: '提示框',
+                                        icon: 1,
+                                    });
+                                    layer.close(index);
+                                    return true;
+                                }else{
+                                    layer.alert('审批失败！', {
+                                        title: '提示框',
+                                        icon: 1,
+                                    });
+                                }
 
-                        layer.alert('已审批！', {
-                            title: '提示框',
-                            icon: 1,
-                        });
-                        layer.close(index);
+                            }
+                        };
+                        xhttp.open("POST", "http://localhost:8888/Contract/approveServlet", true);
+                        xhttp.send(JSON.stringify(js_send));
                     }
                 }
 

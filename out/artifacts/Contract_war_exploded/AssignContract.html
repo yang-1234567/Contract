@@ -230,6 +230,7 @@
                     } else {
                         //提交数据
                         let js_send = {
+                            "operator":getCookie("curUsername"),
                             "contractId": value,
                             "countersign": countersign,
                             "approve": approve,
@@ -247,7 +248,7 @@
                                             $(this).remove();
                                         }
                                     });
-                                    layer.alert('已提交！', {
+                                    layer.alert('已分配！', {
                                         title: '提示框',
                                         icon: 1,
                                     });
@@ -258,7 +259,7 @@
                                 }
                             }
                         };
-                        xhttp.open("POST", "http://localhost:8888/Contract/draftServlet", true);
+                        xhttp.open("POST", "http://localhost:8888/Contract/fenpeiContractServlet", true);
                         xhttp.send(JSON.stringify(js_send));
 
                     }

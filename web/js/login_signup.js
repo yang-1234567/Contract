@@ -189,8 +189,14 @@ function verifyLogin(username, password) {
             let js_receive = JSON.parse(this.responseText);
             if (js_receive.result === '1') {
                 //获取id，权限，存在cookie中
+
+                if(js_receive.role != ""){
+                    setCookie("rights",js_receive.rights);
+                } else{
+                    setCookie("rights","");
+                }
                 setCookie("curUsername",username);
-                setCookie("rights",js_receive.rights);
+
                 // setCookie("rights",js_o.rights);
                 window.close();
                 window.open("./index.html");

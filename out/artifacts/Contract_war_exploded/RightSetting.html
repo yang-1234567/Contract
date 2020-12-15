@@ -69,25 +69,55 @@
 <script src="js/cookie.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-
-        let js_receive = {
-            "right": "0 1 2 3 4"
+        let js_send = {
+            "roleName": getCookie("roleName")
         }
 
-        let rights = js_receive.right.split(" ");
-        for (let i = 0; i < rights.length; i++) {
-            $("input").eq(i).prop("checked", true);
-        }
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let js_receive = JSON.parse(this.responseText);
+
+                let rights = js_receive.right.split(" ");
+                for (let i = 0; i < rights.length; i++) {
+                    $("input").eq(i).prop("checked", true);
+                }
+            }
+        };
+        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+        xhttp.send(JSON.stringify(js_send));
+
 
         $(document).on('click', '.btn_submit', function () {
             let rights = "";
             for (let i = 0; i < 12; i++) {
                 if ($("input").eq(i).prop('checked')) {
-                    rights += (i+" ");
+                    rights += (i + " ");
                 }
             }
-            alert(rights);
-            history.go(-1);
+
+            let js_send = {
+                "operator":getCookie("curUsername"),
+                "roleName": getCookie("roleName"),
+                "rights": rights
+            }
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+                    if (js_receive.result === '1') {
+                        layer.alert("修改成功");
+                        history.go(-1);
+                    } else {
+                        layer.alert("修改失败");
+                    }
+
+                }
+            };
+            xhttp.open("POST", "http://localhost:8888/Contract/updateRoleServlet", true);
+            xhttp.send(JSON.stringify(js_send));
+
         })
 
     })

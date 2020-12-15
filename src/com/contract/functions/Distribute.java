@@ -71,8 +71,7 @@ public class Distribute {
 		String cn = "1211085950";
 		str2.add("����");
 		Distribute dis = new Distribute(str,str2,str3,cn);
-		ConstractProDAO.getContractPro();
-		
-		
+		//ConstractProDAO.getContractPro();
+
 	}
 }

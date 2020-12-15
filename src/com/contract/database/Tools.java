@@ -606,7 +606,6 @@ public class Tools {
     	
     	User user = new User(unm,upw,1);
     	tip = UserDAO.InsertUser(user);
-    	if(tip = true)System.out.println("ע��ɹ�");
     	return tip;
     	
     }
