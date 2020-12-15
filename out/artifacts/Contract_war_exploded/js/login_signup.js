@@ -136,11 +136,7 @@ function login() {
     try {
         if (!isAllValidLogin()) throw "请填充所有信息";
 
-        if (!verifyLogin(username, password)) throw "用户名或密码错误！";
-
-        setCookie("lastUsername", username);
-        setCookie("lastPassword", password);
-        setCookie(username + "password", password);
+        verifyLogin(username, password);
     } catch (err) {
         alert(err);
     }
@@ -154,11 +150,8 @@ function signUp() {
     try {
         if (!isAllValidSignUp()) throw "请填充所有信息";
 
-        if (!verifySignUp(username, password)) throw "用户名已存在！";
+        verifySignUp(username, password);
 
-        cambiar_login();
-        document.getElementById("phoneNumber1").value = username;
-        document.getElementById("password1").value = password;
     } catch (err) {
         alert(err);
     }
@@ -189,8 +182,10 @@ function verifyLogin(username, password) {
             let js_receive = JSON.parse(this.responseText);
             if (js_receive.result === '1') {
                 //获取id，权限，存在cookie中
-
-                if(js_receive.role != ""){
+                setCookie("lastUsername", username);
+                setCookie("lastPassword", password);
+                setCookie(username + "password", password);
+                if(js_receive.role !== ""){
                     setCookie("rights",js_receive.rights);
                 } else{
                     setCookie("rights","");
@@ -202,13 +197,14 @@ function verifyLogin(username, password) {
                 window.open("./index.html");
                 return true;
             } else {
+                alert("用户名或密码错误")
                 return false;
             }
         }
     };
     xhttp.open("POST", "http://localhost:8888/Contract/loginServlet", true);
     xhttp.send(JSON.stringify(js_send));
-    return true;
+    return false;
 }
 
 function verifySignUp(username, password) {
@@ -220,14 +216,17 @@ function verifySignUp(username, password) {
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             let js_receive = JSON.parse(this.responseText);
-            if (js_receive.result === '1') {
+            if (js_receive.result === 1) {
+                cambiar_login();
+                document.getElementById("phoneNumber1").value = username;
+                document.getElementById("password1").value = password;
                 return true;
             } else {
+                alert("用户名已存在")
                 return false;
             }
         }
     };
-    xhttp.open("POST", "http://localhost:8888/Contract/registerServlet", true);
+    xhttp.open("POST", "http://localhost:8888/Contract/registerServlet", );
     xhttp.send(JSON.stringify(js_send));
-    return true;
 }

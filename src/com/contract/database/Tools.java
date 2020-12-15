@@ -428,7 +428,7 @@ public class Tools {
 	           
 	       if(rs.next()) 
 	       {  //ѭ�����������
-	          content +=rs.getString("password");
+	          content +=rs.getString("rolName");
 	         
 	       }
 	    } catch (Exception e) {

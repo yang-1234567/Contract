@@ -86,7 +86,7 @@
                 <li class="menu"><a href="#" class="dropdown-toggle"><i class="icon-desktop"></i><span
                         class="menu-text"> 流程管理 </span><b class="arrow icon-angle-down"></b></a>
                     <ul class="submenu">
-                        <li class="home  operation"><a href="javascript:void(0)" name="DraftContract.html"
+                        <li class="home operation"><a href="javascript:void(0)" name="DraftContract.html"
                                                                            title="起草合同" class="iframeurl"><i
                                 class="icon-double-angle-right"></i>起草</a></li>
                         <li class="home operation"><a href="javascript:void(0)" name="CountersignContract.html"
@@ -258,30 +258,29 @@
                 $(".operation").eq(i).hide();
             }
 
-            if(getCookie("rights") != ""){
-                alert(2);
-                let rights = getCookie("rights").split(' ');
+            if(getCookie("rights") !== ""){
+                let rights = getCookie("rights").split(',');
                 if (rights[0] !== 'none') {
                     for (let i = 0; i < rights.length; i++) {
-                        $(".operation").eq(i).show();
+                        $(".operation").eq(rights[i]).show();
                     }
                 }
+            }
 
-                if ($(".operation:eq(0)").css('display') === 'none' && $(".operation:eq(1)").css('display') === 'none' &&
-                    $(".operation:eq(2)").css('display') === 'none' && $(".operation:eq(3)").css('display') === 'none') {
-                    $(".menu:eq(0)").hide();
-                }
+            if ($(".operation:eq(0)").css('display') === 'none' && $(".operation:eq(1)").css('display') === 'none' &&
+                $(".operation:eq(2)").css('display') === 'none' && $(".operation:eq(3)").css('display') === 'none') {
+                $(".menu:eq(0)").hide();
+            }
 
-                if ($(".operation:eq(5)").css('display') === 'none' && $(".operation:eq(6)").css('display') === 'none') {
-                    $(".menu:eq(1)").hide();
-                }
-                if ($(".operation:eq(7)").css('display') === 'none' && $(".operation:eq(8)").css('display') === 'none') {
-                    $(".menu:eq(2)").hide();
-                }
-                if ($(".operation:eq(9)").css('display') === 'none' && $(".operation:eq(10)").css('display') === 'none' &&
-                    $(".operation:eq(11)").css('display') === 'none') {
-                    $(".menu:eq(3)").hide();
-                }
+            if ($(".operation:eq(5)").css('display') === 'none' && $(".operation:eq(6)").css('display') === 'none') {
+                $(".menu:eq(1)").hide();
+            }
+            if ($(".operation:eq(7)").css('display') === 'none' && $(".operation:eq(8)").css('display') === 'none') {
+                $(".menu:eq(2)").hide();
+            }
+            if ($(".operation:eq(9)").css('display') === 'none' && $(".operation:eq(10)").css('display') === 'none' &&
+                $(".operation:eq(11)").css('display') === 'none') {
+                $(".menu:eq(3)").hide();
             }
 
 

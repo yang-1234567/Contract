@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
             String username = (String) jsonObject.get("username");
             String password = (String) jsonObject.get("password");
             flag = Tools.Register(username, password);
-
+            System.out.println(flag);
         } catch (ParseException e) {
             e.printStackTrace();
         }
