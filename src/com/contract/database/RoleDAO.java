@@ -49,11 +49,11 @@ public class RoleDAO {
 			//2������statement���������ִ��SQL��䣡��
 			st=conn.createStatement();
 			//3������sql��ѯ���
-			String sql="select *from \"role\"";
+			String sql="select * from \"role\"";
 			//4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 			rs=st.executeQuery(sql);
 
-			if(rs.next())
+			while (rs.next())
 			{  //ѭ�����������
 				Role temp = new Role(rs.getString("name"),rs.getString("description"),rs.getInt("del"));
 				roles.add(temp);
@@ -101,7 +101,11 @@ public class RoleDAO {
 		    conn=Conn.getconn();
 		    try {
 		        st=conn.createStatement();
+				String sql1="delete from \"right\" where \"rolName\"='"+con.getName()+"'";
+				String sql2="delete from \"role_function\" where \"name\"='"+con.getName()+"'";
 		        String sql="delete from \"role\" where \"name\"='"+con.getName()+"'";
+		        st.executeUpdate(sql1);
+		        st.executeUpdate(sql2);
 		        int result=st.executeUpdate(sql);
 		        //�Ͳ���һ����������صĽ������0������ɹ�
 		        if(result>0) {

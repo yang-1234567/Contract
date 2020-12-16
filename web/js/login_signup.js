@@ -186,6 +186,7 @@ function verifyLogin(username, password) {
                 setCookie("lastPassword", password);
                 setCookie(username + "password", password);
                 if(js_receive.role !== ""){
+                    setCookie("role",js_receive.role);
                     setCookie("rights",js_receive.rights);
                 } else{
                     setCookie("rights","");

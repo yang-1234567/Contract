@@ -30,18 +30,20 @@ public class SearchAllContractServlet extends HttpServlet {
         String keyword = (String) jsonObject.get("keyword");
 
         List<Contract> contracts = Tools.getContracts(keyword);
+
         String ids = "";
         String names = "";
         String times = "";
         for (int i = 0; i < contracts.size(); i++) {
-            ids += (contracts.get(i).getId() + " ");
+            ids += (contracts.get(i).getNum() + " ");
             names += (contracts.get(i).getName() + " ");
             times += (contracts.get(i).getBeginTime() + " ");
         }
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("ids", ids);
-        jsonObject1.put("names", names);
-        jsonObject1.put("times", times);
+        jsonObject1.put("num",contracts.size());
+        jsonObject1.put("ids", ids.trim());
+        jsonObject1.put("names", names.trim());
+        jsonObject1.put("times", times.trim());
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

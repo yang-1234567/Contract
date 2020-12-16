@@ -85,8 +85,6 @@
 
                         </tbody>
                     </table>
-                    <iframe style="border:0; width:100%; background-color:#FFF;" frameborder="0"
-                            src="page.html"></iframe>
                 </div>
             </div>
         </div>
@@ -122,31 +120,25 @@
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     let js_receive = JSON.parse(this.responseText);
-
-                    //let js_receive = {
-                     //   "ids": "1 2 3 4 5",
-                    //  "names": "合同1 合同2 合同3 合同4 合同5",
-                    //     "times": "2020-12-01 2020-12-04 2020-12-06 2020-12-09 2020-12-10",
-                    //     "countersign":"张三 李四 王五 赵六 钱七",
-                    //     "approve":"张三 李四 王五 钱七",
-                    //       "sign":"张三 李四 赵六 钱七",
-                    // };
-                    let ids = js_receive.ids.split(" ");
-                    let names = js_receive.names.split(" ");
-                    let times = js_receive.times.split(" ");
-                    countersign = js_receive.countersign.split(" ");
-                    approve = js_receive.approve.split(" ");
-                    sign = js_receive.sign.split(" ");
-                    //初始化查询列表
-                    for (var i = 0; i < ids.length; i++) {
-                        //拼接表格的行和列
-                        var str = "";
-                        str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
-                            '<td>' + times[i] + '</td>' +
-                            '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary assign">分配</button> </td> </tr>';
-                        //追加到table中
-                        $("#assign_table").append(str);
+                    if(js_receive.num !== 0){
+                        let ids = js_receive.ids.split(" ");
+                        let names = js_receive.names.split(" ");
+                        let times = js_receive.times.split(" ");
+                        countersign = js_receive.countersign.split(" ");
+                        approve = js_receive.approve.split(" ");
+                        sign = js_receive.sign.split(" ");
+                        //初始化查询列表
+                        for (var i = 0; i < ids.length; i++) {
+                            //拼接表格的行和列
+                            var str = "";
+                            str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
+                                '<td>' + times[i] + '</td>' +
+                                '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary assign">分配</button> </td> </tr>';
+                            //追加到table中
+                            $("#assign_table").append(str);
+                        }
                     }
+
                 }
             };
             xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
@@ -241,7 +233,7 @@
                         xhttp.onreadystatechange = function () {
                             if (this.readyState === 4 && this.status === 200) {
                                 let js_receive = JSON.parse(this.responseText);
-                                if (js_receive.result === '1') {
+                                if (js_receive.result === 1) {
                                     // 移除该合同
                                     $("#assign_table").eq(0).find("tr").each(function () {
                                         if ($(this).eq(0).find("button").val() === value) {

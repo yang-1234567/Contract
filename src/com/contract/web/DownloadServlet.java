@@ -1,5 +1,7 @@
 package com.contract.web;
 
+import com.contract.database.ContractAtt;
+import com.contract.database.ContractAttDAO;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ServletContext;
@@ -16,20 +18,22 @@ import java.util.Base64;
 public class DownloadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String downloadFileName  = "test.png";
+        String downloadFileName  = req.getParameter("contractid");
 
         ServletContext servletContext = getServletContext();
 
-        String mimeType = servletContext.getMimeType("/upload/" + downloadFileName);
+        String name = ContractAttDAO.getAtt(downloadFileName).getFileName();
+
+        String mimeType = servletContext.getMimeType("/upload/" +name );
         System.out.println("下载的文件类型" + mimeType);
 
         resp.setContentType(mimeType);
 
         if (req.getHeader("User-Agent").contains("Firefox")){
             resp.setHeader("Content-Disposition","attachment; filename==?UTF-8?B" +
-                    Base64.getEncoder().encode(downloadFileName.getBytes("UTF-8")) +"?=" );
+                    Base64.getEncoder().encode(name.getBytes("UTF-8")) +"?=" );
         } else {
-            resp.setHeader("Content-Disposition","attachment; filename=" + URLEncoder.encode(downloadFileName,"UTF-8"));
+            resp.setHeader("Content-Disposition","attachment; filename=" + URLEncoder.encode(name,"UTF-8"));
         }
 
         InputStream resourceAsStream = servletContext.getResourceAsStream("/upload/" + downloadFileName);

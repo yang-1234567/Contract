@@ -1,6 +1,8 @@
 package com.contract.web;
 
-import com.contract.database.*;
+import com.contract.database.Contract;
+import com.contract.database.ContractDAO;
+import com.contract.database.Tools;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,9 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
+import java.util.List;
 
-public class DeleteContractServlet extends HttpServlet {
+public class SearchDingGaoServlet extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         String resultString = myUtils.getRequestString(req);
@@ -25,17 +28,25 @@ public class DeleteContractServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String operator = (String) jsonObject.get("username");
-        String contractId = (String) jsonObject.get("contractId");
+        String username = (String) jsonObject.get("username");
+        String keyword = (String) jsonObject.get("keyword");
 
-        Contract contract = Tools.getOneCon(contractId);
-        boolean flag = ContractDAO.DeleteContract(contract);
+        List<Contract> list = ContractDAO.getDingGao(username,keyword);
 
-        if (flag) {
-            LogDAO.InsertLog(new Log(operator, new Timestamp(System.currentTimeMillis()), "Delete contract " + contractId, 1));
+        String str1 = "";
+        String str2 = "";
+        String str3 = "";
+        for (Contract contract : list) {
+            str1 = str1 + contract.getNum() + " ";
+            str2 = str2 + contract.getName() + " ";
+            str3 = str3 + contract.getBeginTime() + " ";
         }
+
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("result", flag ? 1 : 0);
+        jsonObject1.put("num",list.size());
+        jsonObject1.put("ids", str1.trim());
+        jsonObject1.put("names", str2.trim());
+        jsonObject1.put("times", str3.trim());
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

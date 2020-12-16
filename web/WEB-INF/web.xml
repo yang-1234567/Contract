@@ -175,6 +175,7 @@
         <url-pattern>/deleteCustomerServlet</url-pattern>
     </servlet-mapping>
 
+
     <servlet>
         <servlet-name>FenpeiContractServlet</servlet-name>
         <servlet-class>com.contract.web.FenpeiContractServlet</servlet-class>
@@ -271,7 +272,53 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>SearchRolesServlet</servlet-name>
-        <url-pattern>/SearchRolesServlet</url-pattern>
+        <url-pattern>/searchRolesServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddNewUserServlet</servlet-name>
+        <servlet-class>com.contract.web.AddNewUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddNewUserServlet</servlet-name>
+        <url-pattern>/addNewUserServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchDingGaoServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchDingGaoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchDingGaoServlet</servlet-name>
+        <url-pattern>/searchDingGaoServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchHuiQianRenServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchHuiQianRenServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchHuiQianRenServlet</servlet-name>
+        <url-pattern>/searchHuiQianRenServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchHuiQianYiJianServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchHuiQianYiJianServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchHuiQianYiJianServlet</servlet-name>
+        <url-pattern>/searchHuiQianYiJianServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DinggaoServlet</servlet-name>
+        <servlet-class>com.contract.web.DinggaoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DinggaoServlet</servlet-name>
+        <url-pattern>/dinggaoServlet</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

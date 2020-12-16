@@ -46,7 +46,7 @@
                 <div class="search_style">
                     <div class="title_names">查询合同</div>
                     <ul class="search_content clearfix">
-                        <li><label class="lf">合同名称</label><input name="" type="text" class="text_add"/></li>
+                        <li><label class="lf">合同名称</label><input id="keyword" name="" type="text" class="text_add"/></li>
                         <li style="width:90px;">
                             <button type="button" id="search" class="btn_search">查询</button>
                         </li>
@@ -66,8 +66,7 @@
                         </thead>
                         <tbody id="contract_table"></tbody>
                     </table>
-                    <iframe style="border:0; width:100%; background-color:#FFF;" frameborder="0"
-                            src="page.html"></iframe>
+
                 </div>
             </div>
         </div>
@@ -207,7 +206,7 @@
                     xhttp.onreadystatechange = function () {
                         if (this.readyState === 4 && this.status === 200) {
                             let js_receive = JSON.parse(this.responseText);
-                            if (js_receive.result === '1') {
+                            if (js_receive.result === 1) {
                                 $("#contract_table").find(".delete_btn").each(function () {
                                     if ($(this).val() === id) {
                                         $(this).parent().parent().remove();
@@ -233,31 +232,12 @@
 
             //获取合同信息
             layer.open({
-                type: 1,
+                type: 2,
                 title: '新增合同',
                 shadeClose: true, //点击遮罩关闭层
-                area: ['500px', ''],
-                content: $('#modify_menu'),
-                btn: ['提交', '取消'],
-                yes: function (index, layero) {
-                    var str = "";
-                    $(".finalize").each(function (n) {
-                        if ($(this).val() === "") {
-                            layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
-                                title: '提示框',
-                                icon: 0,
-                            });
+                area: ['500px', '500px'],
+                content: "DraftContract.html",
 
-                        } else {
-                            layer.alert('修改成功！', {
-                                title: '提示框',
-                                icon: 1,
-                            });
-                            layer.close(index);
-                        }
-                    });
-
-                }
             });
 
         });

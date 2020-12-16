@@ -21,11 +21,6 @@ public class SearchAllRoleServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String resultString = myUtils.getRequestString(req);
         JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject = (JSONObject) new JSONParser().parse(resultString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         List<Role> roles = RoleDAO.getRoles();
 
@@ -38,8 +33,9 @@ public class SearchAllRoleServlet extends HttpServlet {
         }
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("roleName", roleNames);
-        jsonObject1.put("description", des);
+        jsonObject1.put("num",roles.size());
+        jsonObject1.put("roleName", roleNames.trim());
+        jsonObject1.put("description", des.trim());
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

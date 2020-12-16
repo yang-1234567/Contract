@@ -48,7 +48,7 @@
                 <div class="search_style">
                     <div class="title_names">查询待审批合同</div>
                     <ul class="search_content clearfix">
-                        <li><label class="lf">合同名称</label><input name="" type="text" class="text_add"/></li>
+                        <li><label class="lf">合同名称</label><input id="keyword" name="" type="text" class="text_add"/></li>
                         <li style="width:90px;">
                             <button type="button" class="btn_search">查询</button>
                         </li>
@@ -67,8 +67,7 @@
 
                         </tbody>
                     </table>
-                    <iframe style="border:0; width:100%; background-color:#FFF;" frameborder="0"
-                            src="page.html"></iframe>
+
                 </div>
             </div>
         </div>
@@ -97,25 +96,28 @@
             let js_send = {
                 "username":getCookie("curUsername"),
                 "keyword": keyword,
-                "process": 3
+                "process": '3'
             };
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     let js_receive = JSON.parse(this.responseText);
 
-                    let ids = js_receive.ids.split(" ");
-                    let names = js_receive.names.split(" ");
-                    let times = js_receive.times.split(" ");
-                    //初始化查询列表
+                    if(js_receive.num !==0){
+                        let ids = js_receive.ids.split(" ");
+                        let names = js_receive.names.split(" ");
+                        let times = js_receive.times.split(" ");
+                        //初始化查询列表
 
-                    for (var i = 0; i < ids.length; i++) {
-                        var str = "";//定义用于拼接的字符串
-                        str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
-                            '<td>' + times[i] + '</td>' +
-                            '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary approve_btn">审批</button> </td> </tr>';
-                        $("#approve_table").append(str);
+                        for (var i = 0; i < ids.length; i++) {
+                            var str = "";//定义用于拼接的字符串
+                            str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
+                                '<td>' + times[i] + '</td>' +
+                                '<td><button  value="' + ids[i] + '" type="button" class="btn btn-primary approve_btn">审批</button> </td> </tr>';
+                            $("#approve_table").append(str);
+                        }
                     }
+
                 }
             };
             xhttp.open("POST", "http://localhost:8888/Contract/searchContractByProcessServlet", true);
@@ -168,15 +170,15 @@
                         let js_send = {
                             "contractId": value,
                             "username": getCookie("curUsername"),
-                            "type": 3,
-                            "pass": group1.val(),
+                            "type": '3',
+                            "approve": group1.val(),
                             "suggestion":$('#suggestion').val()
                         }
                         let xhttp = new XMLHttpRequest();
                         xhttp.onreadystatechange = function () {
                             if (this.readyState === 4 && this.status === 200) {
                                 let js_receive = JSON.parse(this.responseText);
-                                if(js_receive.result==='1'){
+                                if(js_receive.result === 1){
                                     $("#approve_table").eq(0).find("tr").each(function () {
                                         if ($(this).eq(0).find("button").val() === value) {
                                             $(this).remove();

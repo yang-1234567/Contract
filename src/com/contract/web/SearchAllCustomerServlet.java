@@ -36,17 +36,18 @@ public class SearchAllCustomerServlet extends HttpServlet {
         String phones = "";
 
         for (int i=0;i<customers.size();i++){
-            ids+=(customers.get(i).getId()+" ");
+            ids+=(customers.get(i).getNum()+" ");
             names+=(customers.get(i).getName()+" ");
             address+=(customers.get(i).getAddress()+" ");
             phones+=(customers.get(i).getTel()+" ");
         }
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("ids",ids);
-        jsonObject1.put("names",names);
-        jsonObject1.put("address",address);
-        jsonObject1.put("phones",phones);
+        jsonObject1.put("num",customers.size());
+        jsonObject1.put("ids",ids.trim());
+        jsonObject1.put("names",names.trim());
+        jsonObject1.put("address",address.trim());
+        jsonObject1.put("phones",phones.trim());
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

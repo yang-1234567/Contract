@@ -257,6 +257,9 @@
             for (let i = 0; i < 13; i++) {
                 $(".operation").eq(i).hide();
             }
+            if(getCookie("role")===""){
+                $(".change_Password:eq(0)").hide();
+            }
 
             if(getCookie("rights") !== ""){
                 let rights = getCookie("rights").split(',');
@@ -390,7 +393,7 @@
                         });
                         return false;
                     }
-                    if (!$("#c_mew_pas").val || $("#c_mew_pas").val() != $("#Nes_pas").val()) {
+                    if (!$("#c_mew_pas").val() || $("#c_mew_pas").val() != $("#Nes_pas").val()) {
                         layer.alert('密码不一致!', {
                             title: '提示框',
                             icon: 0,
@@ -398,11 +401,34 @@
                         });
                         return false;
                     } else {
-                        layer.alert('修改成功！', {
-                            title: '提示框',
-                            icon: 1,
-                        });
-                        layer.close(index);
+                        let js_send = {
+                            "operator": getCookie('curUsername'),
+                            "username": getCookie('curUsername'),
+                            "newPassword": $("#c_mew_pas").val(),
+                            "newRole" :getCookie('role')
+                        }
+                        let xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                let js_receive = JSON.parse(this.responseText);
+                                if (js_receive.result === 1) {
+                                    $("tr").find('.modify_btn').each(function () {
+                                        if ($(this).val() === name) {
+                                            $(this).parent().parent().eq(1).val(role);
+                                        }
+                                    })
+                                    layer.alert('修改成功！', {
+                                        title: '提示框',
+                                        icon: 1,
+                                    });
+                                    layer.close(index);
+                                } else {
+                                    layer.alert('修改失败');
+                                }
+                            }
+                        };
+                        xhttp.open("POST", "http://localhost:8888/Contract/updateUserServlet", true);
+                        xhttp.send(JSON.stringify(js_send));
                     }
                 }
             });

@@ -30,24 +30,27 @@ public class SearchMyServlet extends HttpServlet {
         String username = (String) jsonObject.get("username");
 
 
-        List<Contract> list = Tools.getState1(username, keyword);
+        List<Contract> list = Tools.getState1(keyword, username);
+        System.out.println(list.size());
+
 
         String str1 = "";
         String str2 = "";
         String str3 = "";
         String str4 = "";
         for (Contract contract : list) {
-            str1 = str1 + contract.getId() + " ";
+            str1 = str1 + contract.getNum() + " ";
             str2 = str2 + contract.getName() + " ";
             str3 = str3 + contract.getBeginTime() + " ";
-            str4 += Tools.getState2(contract.getNum());
+            str4 += Tools.getState2(contract.getNum()) + " ";
         }
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("ids", str1);
-        jsonObject1.put("names", str2);
-        jsonObject1.put("times", str3);
-        jsonObject1.put("states", str4);
+        jsonObject1.put("num",list.size());
+        jsonObject1.put("ids", str1.trim());
+        jsonObject1.put("names", str2.trim());
+        jsonObject1.put("times", str3.trim());
+        jsonObject1.put("states", str4.trim());
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

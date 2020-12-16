@@ -34,8 +34,6 @@ public class Draft {
 			java.util.Date dayDateUtil2 =  format.parse(end);
 			Date date1 = new Date(dayDateUtil.getTime());
 			Date date2 = new Date(dayDateUtil2.getTime());
-			System.out.println(date1.toString());
-			System.out.println(date2.toString());
 			
 			//����Ŀ¼
 			String str1 = "attachment";

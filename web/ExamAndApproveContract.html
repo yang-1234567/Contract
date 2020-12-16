@@ -48,7 +48,7 @@
                 <div class="search_style">
                     <div class="title_names">查询待审批合同</div>
                     <ul class="search_content clearfix">
-                        <li><label class="lf">合同名称</label><input name="" type="text" class="text_add"/></li>
+                        <li><label class="lf">合同名称</label><input id="keyword" name="" type="text" class="text_add"/></li>
                         <li style="width:90px;">
                             <button type="button" class="btn_search">查询</button>
                         </li>
@@ -67,8 +67,7 @@
 
                         </tbody>
                     </table>
-                    <iframe style="border:0; width:100%; background-color:#FFF;" frameborder="0"
-                            src="page.html"></iframe>
+
                 </div>
             </div>
         </div>
@@ -172,14 +171,14 @@
                             "contractId": value,
                             "username": getCookie("curUsername"),
                             "type": '3',
-                            "pass": group1.val(),
+                            "approve": group1.val(),
                             "suggestion":$('#suggestion').val()
                         }
                         let xhttp = new XMLHttpRequest();
                         xhttp.onreadystatechange = function () {
                             if (this.readyState === 4 && this.status === 200) {
                                 let js_receive = JSON.parse(this.responseText);
-                                if(js_receive.result===1){
+                                if(js_receive.result === 1){
                                     $("#approve_table").eq(0).find("tr").each(function () {
                                         if ($(this).eq(0).find("button").val() === value) {
                                             $(this).remove();

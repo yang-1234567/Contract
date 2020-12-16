@@ -67,26 +67,31 @@
 </body>
 <script src="js/jquery-1.8.3.min.js"></script>
 <script src="js/cookie.js"></script>
+<script src="assets/layer/layer.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        let js_send = {
-            "roleName": getCookie("roleName")
+
+        function queryFunctions() {
+            let js_send = {
+                "roleName": getCookie("roleName")
+            }
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+                    if (js_receive.num === 0) return;
+                    let rights = js_receive.rights.split(" ");
+                    for (let i = 0; i < rights.length; i++) {
+                        $("input").eq(rights[i]).prop("checked", true);
+                    }
+                }
+            };
+            xhttp.open("POST", "http://localhost:8888/Contract/searchRolesServlet", true);
+            xhttp.send(JSON.stringify(js_send));
         }
 
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                let js_receive = JSON.parse(this.responseText);
-
-                let rights = js_receive.right.split(" ");
-                for (let i = 0; i < rights.length; i++) {
-                    $("input").eq(i).prop("checked", true);
-                }
-            }
-        };
-        xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
-        xhttp.send(JSON.stringify(js_send));
-
+        queryFunctions();
 
         $(document).on('click', '.btn_submit', function () {
             let rights = "";
@@ -97,7 +102,7 @@
             }
 
             let js_send = {
-                "operator":getCookie("curUsername"),
+                "operator": getCookie("curUsername"),
                 "roleName": getCookie("roleName"),
                 "rights": rights
             }
@@ -106,7 +111,7 @@
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     let js_receive = JSON.parse(this.responseText);
-                    if (js_receive.result === '1') {
+                    if (js_receive.result === 1) {
                         layer.alert("修改成功");
                         history.go(-1);
                     } else {

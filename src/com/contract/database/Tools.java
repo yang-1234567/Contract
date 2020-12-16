@@ -9,6 +9,8 @@ import java.util.List;
 
 public class Tools {
 
+
+
 	public static String StrSplit(String str) //��ȡ�ַ��������λ���ж��ļ���ʽ
 	{
 		String tips = "";
@@ -75,7 +77,10 @@ public class Tools {
 	    	//2������statement���������ִ��SQL��䣡��
 	        st=conn.createStatement();
 	        //3������sql��ѯ���
-	        String sql="select * from \"contract_state\",\"contract\",\"contract_process\" where \"contract_state\".\"num\" = \"contract\".\"num\" and \"contract_state\".\"num\"=\"contract_process\".\"conNum\" and \"contract\".\"name\" like '%"+cn+"%' and \"contract_state\".\"type\" = "+i;
+	        String sql="select * from \"contract_state\",\"contract\",\"contract_process\" where \"contract_state\".\"num\" = \"contract\".\"num\" and \"contract_state\".\"num\"=\"contract_process\".\"conNum\" "
+					+"and \"contract\".\"name\" like '%"+cn+"%' and \"contract_state\".\"type\" = "+i
+					+ " and \"contract_process\".\"userName\"= '"+unm
+	        		+ "' and \"contract_process\".\"type\" = " + i;
 	        //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	        rs=st.executeQuery(sql);
 	           
@@ -175,7 +180,7 @@ public class Tools {
 	    	//2������statement���������ִ��SQL��䣡��
 	        st=conn.createStatement();
 	        //3������sql��ѯ���
-	        String sql="select * from \"contract_process\" where \"conNum\" like '%"+key+"%' and \"type\" = 1";
+	        String sql="select * from \"contract_process\" where \"conNum\" ='"+key+"' and \"type\" = 1";
 	        //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	        rs=st.executeQuery(sql);
 	           
@@ -206,7 +211,9 @@ public class Tools {
 	    	//2������statement���������ִ��SQL��䣡��
 	        st=conn.createStatement();
 	        //3������sql��ѯ���
-	        String sql="select \"content\" from \"contract_process\" where \"conNum\" = '"+cid+"' and \"userName\" = '"+uid+"'";
+	        String sql="select \"content\" from \"contract_process\" where \"conNum\" = '"+
+					cid+"' and \"userName\" = '"+uid+"' and \"type\" = "+1;
+			//4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	        //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	        rs=st.executeQuery(sql);
 	           
@@ -234,7 +241,7 @@ public class Tools {
 	    	//2������statement���������ִ��SQL��䣡��
 	        st=conn.createStatement();
 	        //3������sql��ѯ���
-	        String sql="select * from \"contract\" where \"num\" like '%"+cid+"%' and  \"user_id\" = '"+uid+"'";
+	        String sql="select * from \"contract\" where \"name\" like '%"+cid+"%' and  \"user_id\" = '"+uid+"'";
 	        //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	        rs=st.executeQuery(sql);
 	           
@@ -297,7 +304,7 @@ public class Tools {
 			//2������statement���������ִ��SQL��䣡��
 			st=conn.createStatement();
 			//3������sql��ѯ���
-			String sql="select * from \"contract\" where \"num\" like '%"+cid+"%'";
+			String sql="select * from \"contract\" where \"name\" like '%"+cid+"%'";
 			//4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 			rs=st.executeQuery(sql);
            
@@ -328,7 +335,7 @@ public class Tools {
 			//2������statement���������ִ��SQL��䣡��
 			st=conn.createStatement();
 			//3������sql��ѯ���
-			String sql="select * from \"customer\" where \"num\" like '%"+cid+"%'";
+			String sql="select * from \"customer\" where \"name\" like '%"+cid+"%'";
 			//4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 			rs=st.executeQuery(sql);
            

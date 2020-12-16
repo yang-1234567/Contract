@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class AddNewCustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,7 +36,7 @@ public class AddNewCustomerServlet extends HttpServlet {
         String bankAccount = (String) jsonObject.get("bankAccount");
         String append = (String) jsonObject.get("append");
 
-        Customer customer = new Customer("", name, address, phone, fax, email, bankName, bankAccount, 1);
+        Customer customer = new Customer(myUtils.getId(), name, address, phone, fax, email, bankName, bankAccount, 1);
         boolean flag = CustomerDAO.InsertCustomer(customer);
 
         LogDAO.InsertLog(new Log(operator, new Timestamp(System.currentTimeMillis()), "Add a new customer:" + name, 1));

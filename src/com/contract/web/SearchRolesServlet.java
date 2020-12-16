@@ -35,7 +35,8 @@ public class SearchRolesServlet extends HttpServlet {
         }
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("rights", strs);
+        jsonObject1.put("num",rights.size());
+        jsonObject1.put("rights", strs.trim());
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

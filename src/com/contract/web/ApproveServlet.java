@@ -27,7 +27,7 @@ public class ApproveServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String operator = (String) jsonObject.get("operator");
+        String operator = (String) jsonObject.get("username");
         String contractId = (String) jsonObject.get("contractId");
         String type = (String) jsonObject.get("type");
         String approve = (String) jsonObject.get("approve");
@@ -45,7 +45,7 @@ public class ApproveServlet extends HttpServlet {
 
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("resule", flag ? 1 : 0);
+        jsonObject1.put("result", flag ? 1 : 0);
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

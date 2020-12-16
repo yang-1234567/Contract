@@ -20,6 +20,7 @@ import java.util.Arrays;
 
 public class FenpeiContractServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("到这了");
         req.setCharacterEncoding("UTF-8");
         String resultString = myUtils.getRequestString(req);
         JSONObject jsonObject = new JSONObject();
@@ -31,9 +32,9 @@ public class FenpeiContractServlet extends HttpServlet {
 
         String operator = (String) jsonObject.get("operator");
         String contractId = (String) jsonObject.get("contractId");
-        String[] countersign = ((String) jsonObject.get("countersign")).split(" ");
-        String[] exam_and_approve = ((String) jsonObject.get("approve")).split(" ");
-        String[] sign = ((String) jsonObject.get("sign")).split(" ");
+        String[] countersign = ((String) jsonObject.get("countersign")).trim().split(" ");
+        String[] exam_and_approve = ((String) jsonObject.get("approve")).trim().split(" ");
+        String[] sign = ((String) jsonObject.get("sign")).trim().split(" ");
 
         boolean flag = new Distribute(Arrays.asList(countersign), Arrays.asList(exam_and_approve), Arrays.asList(sign), contractId).getTip();
 

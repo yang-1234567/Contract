@@ -15,29 +15,6 @@
 </head>
 <body>
 <div id="finalize_menu" style="display: none">
-    <div class="">
-        <ul class="Add_Manager_style clearfix">
-            <li><label class="label_name">合同名称</label>
-                <input name="合同名称" type="text" class="text finalize" style=" width:200px; "/>
-            </li>
-            <li><label class="label_name">客户</label>
-                <input name="客户" type="text" class="text  finalize" style=" width:200px; "/>
-            </li>
-            <li><label class="label_name">开始时间</label>
-                <input name="开始时间" class="inline laydate-icon finalize" id="start"
-                       style="width:200px; margin-left:10px"/>
-            </li>
-            <li><label class="label_name">结束时间</label>
-                <input name="结束时间" class="inline laydate-icon finalize" id="time1"
-                       style="width:200px; margin-left:10px"/>
-            </li>
-            <li><label class="label_name">附件</label>
-                <input name="附件" class="inline finalize" type="hidden" id="file" style="width:200px; margin-left:10px"/>
-                <input type="button" class="btn-primary" value="重新上传"/>
-            </li>
-        </ul>
-    </div>
-
     <div class="Tips_content" style="margin-left: 30px">
         <h3><label>合同内容：</label></h3>
         <textarea name="合同内容" class="finalize" cols="" rows="" style=" width:90%; height:220px"></textarea>
@@ -69,7 +46,8 @@
                 <div class="search_style">
                     <div class="title_names">查询待定稿合同</div>
                     <ul class="search_content clearfix">
-                        <li><label class="lf">合同名称</label><input name="" type="text" class="text_add"/></li>
+                        <li><label class="lf">合同名称</label><input id="keyword" name="" type="text" class="text_add"/>
+                        </li>
                         <li style="width:90px;">
                             <button type="button" class="btn_search">查询</button>
                         </li>
@@ -86,8 +64,7 @@
                         </thead>
                         <tbody id="finalize_table"></tbody>
                     </table>
-                    <iframe style="border:0; width:100%; background-color:#FFF;" frameborder="0"
-                            src="page.html"></iframe>
+
                 </div>
             </div>
         </div>
@@ -107,19 +84,6 @@
 <script src="assets/laydate/laydate.js" type="text/javascript"></script>
 <script src="js/cookie.js"></script>
 <script type="text/javascript">
-    laydate({
-        elem: '#start',
-        event: 'focus'
-    });
-    laydate({
-        elem: '#time1', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-        event: 'focus',//响应事件。如果没有传入event，则按照默认的click
-        format: 'YYYY-MM-DD',
-        min: laydate.now(), //设定最小日期为当前日期
-        max: '2099-06-16', //最大日期
-        istime: false,
-        istoday: false,
-    });
 
     $(document).ready(function () {
 
@@ -130,13 +94,14 @@
             }
             //请求数据
             let js_send = {
-                "username": getCookie("curUser"),
+                "username": getCookie("curUsername"),
                 "keyword": keyword
             };
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
-                    if (js_receive.num != 0) {
+                    let js_receive = JSON.parse(this.responseText);
+                    if (js_receive.num !== 0) {
                         let ids = js_receive.ids.split(" ");
                         let names = js_receive.names.split(" ");
                         let times = js_receive.times.split(" ");
@@ -154,7 +119,7 @@
 
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/search", true);
+            xhttp.open("POST", "http://localhost:8888/Contract/searchDingGaoServlet", true);
             xhttp.send(JSON.stringify(js_send));
 
         }
@@ -214,7 +179,7 @@
                     });
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/search", true);
+            xhttp.open("POST", "http://localhost:8888/Contract/searchHuiQianRenServlet", true);
             xhttp.send(JSON.stringify(js_send));
         });
 
@@ -236,7 +201,7 @@
                         $("#suggestion").val(js_receive.content);
                     }
                 };
-                xhttp.open("POST", "http://localhost:8888/Contract/search", true);
+                xhttp.open("POST", "http://localhost:8888/Contract/searchHuiQianYiJianServlet", true);
                 xhttp.send(JSON.stringify(js_send));
 
             }
@@ -244,22 +209,22 @@
         });
 
         $(document).on('click', '.finalize_btn', function () {
-            $(this).parent().parent().find("a:eq(0)").html();
+            let id = $(this).val();
+            setCookie('contractId', id);
+
             //获取合同信息
+            let js_send = {
+                "contractId": id
+            }
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     let js_receive = JSON.parse(this.responseText);
-                    $("input:eq(0)").val(js_receive.contractName);
-                    $("input:eq(1)").val(js_receive.customerName);
-                    $("input:eq(2)").val(js_receive.startTime);
-                    $("input:eq(3)").val(js_receive.endTime);
-                    $("input:eq(4)").append('<a id="download">' + js_receive.filename + '</a>');
-                    $("textarea:eq(0)").html(js_receive.content);
+                    $("textarea:eq(0)").val(js_receive.content);
                 }
             };
             xhttp.open("POST", "http://localhost:8888/Contract/contractDetailServlet", true);
-            xhttp.send('{"contractId":' + getCookie("contractId") + '}');
+            xhttp.send(JSON.stringify(js_send));
             layer.open({
                 type: 1,
                 title: '定稿合同',
@@ -269,21 +234,43 @@
                 btn: ['提交', '重置'],
                 yes: function (index, layero) {
                     var str = "";
-                    $(".finalize").each(function (n) {
-                        if ($(this).val() === "") {
-                            layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
-                                title: '提示框',
-                                icon: 0,
-                            });
 
-                        } else {
-                            layer.alert('修改成功！', {
-                                title: '提示框',
-                                icon: 1,
-                            });
-                            layer.close(index);
+                    if ($("textarea:eq(0)") === "") {
+                        layer.alert(str += "" + $(this).attr("name") + "不能为空！\r\n", {
+                            title: '提示框',
+                            icon: 0,
+                        });
+
+                    } else {
+                        js_send = {
+                            "contractId": id,
+                            "content": $("textarea:eq(0)").val()
                         }
-                    });
+                        let xhttp1 = new XMLHttpRequest();
+                        xhttp1.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                let js_receive = JSON.parse(this.responseText);
+                                if (js_receive.result === 1) {
+                                    $('tr').find('button').each(function (){
+                                        if($(this).val()===id){
+                                            $(this).parent().parent().remove();
+                                        }
+                                    })
+                                    layer.alert('修改成功！', {
+                                        title: '提示框',
+                                        icon: 1,
+                                    });
+                                    layer.close(index);
+                                } else {
+                                    layer.alert('定稿失败');
+                                }
+                            }
+                        };
+                        xhttp1.open("POST", "http://localhost:8888/Contract/dinggaoServlet", true);
+                        xhttp1.send(JSON.stringify(js_send));
+
+
+                    }
 
                 }
             });

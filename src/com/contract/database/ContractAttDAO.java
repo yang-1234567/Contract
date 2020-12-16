@@ -22,7 +22,7 @@ public class ContractAttDAO
 				//2������statement���������ִ��SQL��䣡��
 				st=conn.createStatement();
 				//3������sql��ѯ���
-				String sql="select * from \"contract_attachment\" where \"num\" = '"+cid+"'";
+				String sql="select * from \"contract_attachment\" where \"con_id\" = '"+cid+"'";
 				//4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 				rs=st.executeQuery(sql);
 	           

@@ -26,6 +26,7 @@ public class RightDAO {
 	            if(rs.next()) 
 	            {  //ѭ�����������
 	            	Right temp = new Right(rs.getString("useName"),rs.getString("rolName"),rs.getString("description"));
+
 	            	return temp;
 	            }
 	        } catch (Exception e) {
@@ -96,7 +97,7 @@ public class RightDAO {
 	    conn=Conn.getconn();
 	    try {
 	        st=conn.createStatement();
-	        String sql="update \"right\" set \"useName\" = '"+con.getUserName()+"',"+"\"rolName\" = '"+con.getRoleName()+"',"+"\"description\" = '"+con.getDescription()+"'"+" where \"useName\"='"+con.getUserName()+"' and \"rolName\" = '"+con.getRoleName()+"'";
+	        String sql="update \"right\" set \"rolName\" = '"+con.getRoleName()+"',"+"\"description\" = '"+con.getDescription()+"'"+" where \"useName\"='"+con.getUserName()+"'";
 	        int result=st.executeUpdate(sql);
 	        if(result>0)
 	            System.out.println("���ĳɹ�");

@@ -8,12 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.contract.database.Conn;
-import com.contract.database.ConstractProDAO;
-import com.contract.database.Contract;
-import com.contract.database.ContractPro;
-import com.contract.database.ContractState;
-import com.contract.database.ContractStateDAO;
+import com.contract.database.*;
 import com.contract.database.ContractDAO;
 public class Distribute {
 
@@ -48,6 +43,8 @@ public class Distribute {
  				if(ConstractProDAO.InsertContractPro(conn)== false)tip = false;
 
   	   	}
+		ContractState contractState = ContractStateDAO.getContractState(cNum);
+		ContractStateDAO.UpdateContractState(contractState);
 		
 		//ǩ��
 		for(int i = 0;i< s3.size();i++) 
@@ -60,7 +57,7 @@ public class Distribute {
   	   	Timestamp time1 = new Timestamp(System.currentTimeMillis());
 		Contract cont = ContractDAO.getContract(cNum);
 		ContractState constate = new ContractState(1,time1,1,cont.getName(),cNum);
-		ContractStateDAO.updateContractState(constate);
+		ContractStateDAO.UpdateContractState(constate);
 		
 	}
 	

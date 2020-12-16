@@ -56,12 +56,12 @@
                 <div class="search_style">
                     <div class="title_names">查询客户</div>
                     <ul class="search_content clearfix">
-                        <li><label class="lf">客户姓名</label><input name="" type="text" class="text_add"/></li>
+                        <li><label class="lf">客户姓名</label><input id="keyword" name="" type="text" class="text_add"/></li>
                         <li style="width:90px;">
                             <button type="button" id="search" class="btn_search">查询</button>
                         </li>
                         <li style="width:90px;">
-                            <button type="button" class="btn_search btn_add">新增</button>
+                            <button type="button" class="btn_search add_btn">新增</button>
                         </li>
                     </ul>
                 </div>
@@ -77,8 +77,7 @@
                         </thead>
                         <tbody id="contract_table"></tbody>
                     </table>
-                    <iframe style="border:0; width:100%; background-color:#FFF;" frameborder="0"
-                            src="page.html"></iframe>
+
                 </div>
             </div>
         </div>
@@ -115,6 +114,7 @@
                 if (this.readyState === 4 && this.status === 200) {
                     let js_receive = JSON.parse(this.responseText);
 
+                    if(js_receive.num === 0) return ;
                     let ids = js_receive.ids.split(" ");
                     let names = js_receive.names.split(" ");
                     let phones = js_receive.phones.split(" ");
@@ -191,8 +191,8 @@
                         let js_send = {
                             "operator": getCookie('curUsername'),
                             "name": $(".add:eq(0)").val(),
-                            "address": $(".add:eq(1)").val(),
-                            "phone": $(".add:eq(2)").val(),
+                            "address": $(".add:eq(2)").val(),
+                            "phone": $(".add:eq(1)").val(),
                             "fax": $(".add:eq(3)").val(),
                             "email": $(".add:eq(4)").val(),
                             "bankName": $(".add:eq(5)").val(),
@@ -203,7 +203,7 @@
                         xhttp.onreadystatechange = function () {
                             if (this.readyState === 4 && this.status === 200) {
                                 let js_receive = JSON.parse(this.responseText);
-                                if (js_receive.result === '1') {
+                                if (js_receive.result === 1) {
                                     layer.alert('添加成功！', {
                                         title: '提示框',
                                         icon: 1,
@@ -239,7 +239,7 @@
                     xhttp.onreadystatechange = function () {
                         if (this.readyState === 4 && this.status === 200) {
                             let js_receive = JSON.parse(this.responseText);
-                            if (js_receive.result === '1') {
+                            if (js_receive.result === 1) {
                                 $("#contract_table").find(".delete_btn").each(function () {
                                     if ($(this).val() === id) {
                                         $(this).parent().parent().remove();
@@ -254,7 +254,7 @@
                         }
 
                     };
-                    xhttp.open("POST", "http://localhost:8888/Contract/deleteCustomer", true);
+                    xhttp.open("POST", "http://localhost:8888/Contract/deleteCustomerServlet", true);
                     xhttp.send(JSON.stringify(js_send));
                 }
             });
@@ -264,7 +264,7 @@
         $(document).on('click', '.modify_btn', function () {
             var id = $(this).val()
             let js_send = {
-                "customerId": id;
+                "customerId": id
             }
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {

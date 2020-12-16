@@ -84,42 +84,53 @@
 </script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/layer/layer.js"></script>
+<script src="js/cookie.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                let js_receive = JSON.parse(this.responseText);
-                let names = js_receive.usernames.split(" ");
-                let roles = js_receive.roles.split(" ");
+        function queryUser() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+                    let names = js_receive.usernames.split(" ");
+                    let roles = js_receive.roles.split(" ");
 
-                for (let i = 0; i < names.length; i++) {
-
-                    let str = '<tr><td >' + names[i] + '</td>' +
-                        '<td >' + roles[i] + '</td>' +
-                        '<td ><button value="' + names[i] + '" type="button" class="btn btn-primary modify_btn">修改</button>' +
-                        '<button value="' + names[i] + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
-                    $("#user_table").append(str);
+                    for (let i = 0; i < names.length; i++) {
+                        if (roles[i]===','){
+                            roles[i] = "";
+                        }
+                        let str = '<tr><td >' + names[i] + '</td>' +
+                            '<td >' + roles[i] + '</td>' +
+                            '<td ><button value="' + names[i] + '" type="button" class="btn btn-primary modify_btn">修改</button>' +
+                            '<button value="' + names[i] + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
+                        $("#user_table").append(str);
+                    }
                 }
-            }
-        };
-        xhttp.open("POST", "http://localhost:8888/Contract/searchUserServlet", true);
-        xhttp.send();
+            };
+            xhttp.open("POST", "http://localhost:8888/Contract/searchUserServlet", true);
+            xhttp.send();
+        }
 
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                let js_receive = JSON.parse(this.responseText);
-                let names = js_receive.roleName.split(" ");
-                for (let i = 0; i < names.length; i++) {
-                    let str = '<option>' + names[i] + '</option>';
-                    $("#select_Roles").append(str);
+        function queryRoles() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+                    if (js_receive.num === 0) return;
+                    let names = js_receive.roleName.split(" ");
+                    for (let i = 0; i < names.length; i++) {
+                        let str = '<option>' + names[i] + '</option>';
+                        $("#select_Roles").append(str);
+                    }
                 }
-            }
-        };
-        xhttp.open("GET", "http://localhost:8888/Contract/searchAllRolesServlet", true);
-        xhttp.send();
+            };
+            xhttp.open("POST", "http://localhost:8888/Contract/searchAllRoleServlet", true);
+            xhttp.send();
+        }
+
+        queryUser();
+        queryRoles();
 
         /***判断用户添加文本**/
         $('#Add_user_btn').on('click', function () {
@@ -157,7 +168,7 @@
                         xhttp.onreadystatechange = function () {
                             if (this.readyState === 4 && this.status === 200) {
                                 let js_receive = JSON.parse(this.responseText);
-                                if (js_receive.result === '1') {
+                                if (js_receive.result === 1) {
                                     let str = '<tr><td >' + name + '</td>' +
                                         '<td >' + role + '</td>' +
                                         '<td >' +
@@ -175,7 +186,7 @@
                                 }
                             }
                         };
-                        xhttp.open("POST", "http://localhost:8888/Contract/", true);
+                        xhttp.open("POST", "http://localhost:8888/Contract/addNewUserServlet", true);
                         xhttp.send(JSON.stringify(js_send));
 
                     }
@@ -201,7 +212,7 @@
                     xhttp.onreadystatechange = function () {
                         if (this.readyState === 4 && this.status === 200) {
                             let js_receive = JSON.parse(this.responseText);
-                            if (js_receive.result === '1') {
+                            if (js_receive.result === 1) {
                                 $("#user_table").find(".delete_btn").each(function () {
                                     if ($(this).val() === name) {
                                         $(this).parent().parent().remove();
@@ -237,7 +248,7 @@
                     $("#name").val(name);
                     $("#password").val(js_receive.password);
                     $("#select_Roles").val(js_receive.role);
-                    $("#name").disabled();
+                    $("#name").attr("disabled","disabled");
                     layer.open({
                         type: 1,
                         title: '修改用户',
@@ -245,7 +256,7 @@
                         shadeClose: true, //点击遮罩关闭层
                         area: ['300px', '270px'],
                         content: $('#Add_user_style'),
-                        btn: ['添加', '取消'],
+                        btn: ['修改', '取消'],
                         yes: function (index, layero) {
                             const password = $("#password").val();
                             const role = $("#select_Roles").val()
@@ -267,7 +278,7 @@
                                 xhttp.onreadystatechange = function () {
                                     if (this.readyState === 4 && this.status === 200) {
                                         let js_receive = JSON.parse(this.responseText);
-                                        if (js_receive.result === '1') {
+                                        if (js_receive.result === 1) {
                                             $("tr").find('.modify_btn').each(function () {
                                                 if ($(this).val() === name) {
                                                     $(this).parent().parent().eq(1).val(role);

@@ -1,5 +1,6 @@
 package com.contract.web;
 
+import com.contract.functions.Draft;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -31,6 +32,7 @@ public class FileUploadServlet extends HttpServlet {
 
             try {
                 List<FileItem> list = servletFileUpload.parseRequest(req);
+                FileItem file = null;
 
                 for (FileItem fileItem : list) {
                     if (fileItem.isFormField()){//普通表单
@@ -38,11 +40,23 @@ public class FileUploadServlet extends HttpServlet {
                         jsonObject.put(fileItem.getFieldName(),fileItem.getString("UTF-8"));
 
                     } else {//文件表单
-
+                        jsonObject.put("filename",fileItem.getName());
                         jsonObject.put(fileItem.getFieldName(),fileItem.getString("UTF-8"));
-                        fileItem.write(new File("E:\\idea\\workspace\\Contract\\web\\upload" + jsonObject.get("contrac_num") +fileItem.getName()));
+                        file = fileItem;
                     }
                 }
+
+                String name = (String)jsonObject.get("contract_name");
+                name = name.trim();
+                String content =(String) jsonObject.get("contract_content");
+                String beginTime = (String)jsonObject.get("starttime");
+                String endTime = (String)jsonObject.get("endtime");
+                String customer = (String)jsonObject.get("customer");
+                String uid = (String)jsonObject.get("username");
+                String filename = (String)jsonObject.get("filename");
+                Draft draft = new Draft(name,content,customer,beginTime,endTime,uid,filename);
+                file.write(new File("E:\\idea\\workspace\\Contract\\web\\upload\\" + draft.getNum()));
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

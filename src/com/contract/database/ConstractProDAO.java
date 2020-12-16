@@ -21,6 +21,7 @@ public class ConstractProDAO {
 	            st=conn.createStatement();
 	            //3������sql��ѯ���
 	            String sql="select *from \"contract_process\" where \"conNum\" = '"+cid+"'";
+
 	            //4��ִ��sql��䲢�һ���һ����ѯ�Ľ����
 	            rs=st.executeQuery(sql);
 	           
@@ -98,7 +99,12 @@ public class ConstractProDAO {
 	    conn=Conn.getconn();
 	    try {
 	        st=conn.createStatement();
-	        String sql="update \"contract_process\" set \"conNum\" = '"+con.getConNum()+"',"+"\"userName\" = '"+con.getUserName()+"',"+"\"type\" = "+con.getType()+","+"\"state\" = "+con.getState()+","+"\"content\" = '"+con.getContent()+"',"+"\"time\" = "+"to_timestamp('"+con.getTime()+"','yyyy-mm-dd hh24:mi:ss.ff')"+" where \"conNum\"='"+con.getConNum()+"' and \"userName\" = '"+con.getUserName()+"'";
+	        String sql="update \"contract_process\" set \"state\" = "+con.getState()+","+
+					"\"content\" = '"+con.getContent()+"',"+
+					"\"time\" = "+"to_timestamp('"+con.getTime()+"','yyyy-mm-dd hh24:mi:ss.ff')"+
+					" where \"conNum\"='"+con.getConNum()+
+					"' and \"userName\" = '"+con.getUserName()+"'"+
+					" and \"type\" = "+con.getType();
 	        int result=st.executeUpdate(sql);
 	        if(result>0)
 	            System.out.println("���ĳɹ�");

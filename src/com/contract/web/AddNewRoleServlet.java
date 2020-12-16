@@ -30,15 +30,15 @@ public class AddNewRoleServlet extends HttpServlet {
 
         String operator = (String) jsonObject.get("operator");
         String roleName = (String) jsonObject.get("roleName");
-        String description =(String) jsonObject.get("description");
+        String description = (String) jsonObject.get("description");
 
-        Role newRole=new Role(roleName,description,1);
-        RoleDAO.InsertRole(newRole);
+        Role newRole = new Role(roleName, description, 1);
+        boolean flag = RoleDAO.InsertRole(newRole);
 
         LogDAO.InsertLog(new Log(operator, new Timestamp(System.currentTimeMillis()), "Add a new role:" + roleName, 1));
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("result","");
+        jsonObject1.put("result", flag ? 1 : 0);
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

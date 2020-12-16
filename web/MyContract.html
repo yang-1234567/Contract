@@ -23,7 +23,7 @@
                 <div class="search_style">
                     <div class="title_names">查询我起草的合同</div>
                     <ul class="search_content clearfix">
-                        <li><label class="lf">合同名称</label><input name="" type="text" class="text_add"/></li>
+                        <li><label class="lf">合同名称</label><input id="keyword" name="" type="text" class="text_add"/></li>
                         <li style="width:90px;">
                             <button type="button" class="btn_search">查询</button>
                         </li>
@@ -42,8 +42,7 @@
 
                         </tbody>
                     </table>
-                    <iframe style="border:0; width:100%; background-color:#FFF;" frameborder="0"
-                            src="page.html"></iframe>
+
                 </div>
             </div>
         </div>
@@ -69,7 +68,7 @@
                 keyword = "";
             }
             let js_send = {
-                "username": getCookie("curUser"),
+                "username": getCookie("curUsername"),
                 "keyword": keyword
             };
             let xhttp = new XMLHttpRequest();
@@ -77,49 +76,52 @@
                 if (this.readyState === 4 && this.status === 200) {
                     let js_receive = JSON.parse(this.responseText);
 
-                    let ids = js_receive.ids.split(" ");
-                    let names = js_receive.names.split(" ");
-                    let times = js_receive.times.split(" ");
-                    let states = js_receive.states.split(" ");
+                    if(js_receive.num !==0){
+                        let ids = js_receive.ids.split(" ");
+                        let names = js_receive.names.split(" ");
+                        let times = js_receive.times.split(" ");
+                        let states = js_receive.states.split(" ");
 
-                    for (var i = 0; i < 5; i++) {
-                        let str;
-                        str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
-                            '<td>' + times[i] + '</td>' +
-                            '<td><span>';
+                        for (var i = 0; i < ids.length; i++) {
+                            let str;
+                            str = '<tr ><td colspan="5"><a href="javascript:void(0)" class="Inquiry_btn">' + names[i] + '</a></td>' +
+                                '<td>' + times[i] + '</td>' +
+                                '<td><span>';
 
-                        let m_state;
-                        let s = parseInt(states[i]);
-                        switch (s) {
-                            case 0:
-                                m_state = '待分配';
-                                break;
-                            case 1:
-                                m_state = '待会签';
-                                break;
-                            case 2:
-                                m_state = '待定稿';
-                                break;
-                            case 3:
-                                m_state = '待审批';
-                                break;
-                            case 4:
-                                m_state = '待签订';
-                                break;
-                            case 5:
-                                m_state = '已完成';
-                                break;
-                            case 6:
-                                m_state = '已拒绝';
-                                break;
-                            default:
-                                m_state = js_receive.state.split(i);
+                            let m_state;
+                            let s = parseInt(states[i]);
+                            switch (s) {
+                                case 0:
+                                    m_state = '待分配';
+                                    break;
+                                case 1:
+                                    m_state = '待会签';
+                                    break;
+                                case 2:
+                                    m_state = '待定稿';
+                                    break;
+                                case 3:
+                                    m_state = '待审批';
+                                    break;
+                                case 4:
+                                    m_state = '待签订';
+                                    break;
+                                case 5:
+                                    m_state = '已完成';
+                                    break;
+                                case 6:
+                                    m_state = '已拒绝';
+                                    break;
+                                default:
+                                    break;
+                            }
+                            str += m_state;
+                            str += '</span><input type="hidden" value="' + ids[i] + '"/> </td> </tr>';
+                            //追加到table中
+                            $("#countersign_table").append(str);
                         }
-                        str += m_state;
-                        str += '</span><input type="hidden" value="' + ids[i] + '"/> </td> </tr>';
-                        //追加到table中
-                        $("#countersign_table").append(str);
                     }
+
                 }
             };
             xhttp.open("POST", "http://localhost:8888/Contract/searchMyServlet", true);

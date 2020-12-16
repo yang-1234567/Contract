@@ -83,25 +83,29 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        let xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                let js_receive = JSON.parse(this.responseText);
-                let names = js_receive.roleName.split(" ");
-                let des = js_receive.description.split(" ");
-                for (let i = 0; i < names.length; i++) {
+        function search(){
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let js_receive = JSON.parse(this.responseText);
+                    if(js_receive.num === 0) return ;
+                    let names = js_receive.roleName.split(" ");
+                    let des = js_receive.description.split(" ");
+                    for (let i = 0; i < names.length; i++) {
 
-                    let str = '<tr><td>' + names[i] + '</td>' +
-                        '<td>' + des[i] + '</td>' +
-                        '<td><a class="btn btn-info rights_btn" href="RightSetting.html">权限</a>' +
-                        '<button value="' + names[i] + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
-                    $("#role_table").append(str);
+                        let str = '<tr><td>' + names[i] + '</td>' +
+                            '<td>' + des[i] + '</td>' +
+                            '<td><a class="btn btn-info rights_btn" href="RightSetting.html">权限</a>' +
+                            '<button value="' + names[i] + '" type="button" class="btn btn-warning delete_btn">删除</button> </td> </tr>';
+                        $("#role_table").append(str);
+                    }
                 }
-            }
-        };
-        xhttp.open("GET", "http://localhost:8888/Contract/serchAllRole", true);
-        xhttp.send();
+            };
+            xhttp.open("POST", "http://localhost:8888/Contract/searchAllRoleServlet", true);
+            xhttp.send("");
+        }
 
+        search();
 
         $('#Add_Roles_btn').on('click', function () {
             $("input:eq(0)").val("");
@@ -133,7 +137,7 @@
                         xhttp.onreadystatechange = function () {
                             if (this.readyState === 4 && this.status === 200) {
                                 let js_receive = JSON.parse(this.responseText);
-                                if (js_receive.result === '1') {
+                                if (js_receive.result === 1) {
                                     let str = '<tr><td>' + name + '</td>' +
                                         '<td>' + des + '</td>' +
                                         '<td><a class="btn btn-info rights_btn" href="RightSetting.html">权限</a>' +
@@ -144,6 +148,11 @@
                                         icon: 1,
                                     });
                                     layer.close(index);
+                                }else {
+                                    layer.alert('添加失败！', {
+                                        title: '提示框',
+                                        icon: 1,
+                                    });
                                 }
                             }
                         }
@@ -176,7 +185,7 @@
                     xhttp.onreadystatechange = function () {
                         if (this.readyState === 4 && this.status === 200) {
                             let js_receive = JSON.parse(this.responseText);
-                            if (js_receive.result === '1') {
+                            if (js_receive.result === 1) {
                                 $("#role_table").find(".delete_btn").each(function () {
                                     if ($(this).val() === name) {
                                         $(this).parent().parent().remove();

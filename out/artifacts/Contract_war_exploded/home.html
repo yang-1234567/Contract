@@ -37,10 +37,11 @@
 </body>
 <script src="js/cookie.js"></script>
 <script type="text/javascript">
-    if (getCookie("rights") === 'none') {
-        document.getElementById("hint").innerText="您是新用户，没有合同操作权限请等待管理员为您分配权限";
-    }else{
+    if (getCookie("rights") !== '') {
         document.getElementById("hint").innerText="欢迎您 "+getCookie("curUsername")+" :)";
+    }else{
+        document.getElementById("hint").innerText="您是新用户，没有合同操作权限，请等待管理员为您分配权限";
+
     }
 </script>
 </html>
