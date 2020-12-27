@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <base href="http://localhost:8888/Contract/">
+    <base href="http://localhost:8080/Contract/">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
     <!--[if IE 7]>
@@ -119,7 +119,7 @@
 
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchDingGaoServlet", true);
+            xhttp.open("POST", "http://localhost:8080/Contract/searchDingGaoServlet", true);
             xhttp.send(JSON.stringify(js_send));
 
         }
@@ -179,7 +179,7 @@
                     });
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchHuiQianRenServlet", true);
+            xhttp.open("POST", "http://localhost:8080/Contract/searchHuiQianRenServlet", true);
             xhttp.send(JSON.stringify(js_send));
         });
 
@@ -201,7 +201,7 @@
                         $("#suggestion").val(js_receive.content);
                     }
                 };
-                xhttp.open("POST", "http://localhost:8888/Contract/searchHuiQianYiJianServlet", true);
+                xhttp.open("POST", "http://localhost:8080/Contract/searchHuiQianYiJianServlet", true);
                 xhttp.send(JSON.stringify(js_send));
 
             }
@@ -223,7 +223,7 @@
                     $("textarea:eq(0)").val(js_receive.content);
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/contractDetailServlet", true);
+            xhttp.open("POST", "http://localhost:8080/Contract/contractDetailServlet", true);
             xhttp.send(JSON.stringify(js_send));
             layer.open({
                 type: 1,
@@ -266,7 +266,7 @@
                                 }
                             }
                         };
-                        xhttp1.open("POST", "http://localhost:8888/Contract/dinggaoServlet", true);
+                        xhttp1.open("POST", "http://localhost:8080/Contract/dinggaoServlet", true);
                         xhttp1.send(JSON.stringify(js_send));
 
 

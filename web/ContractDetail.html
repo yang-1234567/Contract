@@ -47,11 +47,11 @@
                 $("span:eq(1)").html(js_receive.customerName);
                 $("span:eq(2)").html(js_receive.startTime);
                 $("span:eq(3)").html(js_receive.endTime);
-                $("span:eq(4)").append('<a id="download" href="'+'http://localhost:8888/Contract/downloadServlet?contractid='+getCookie("contractId")+'">' + js_receive.filename + '</a>');
+                $("span:eq(4)").append('<a id="download" href="'+'http://localhost:8080/Contract/downloadServlet?contractid='+getCookie("contractId")+'">' + js_receive.filename + '</a>');
                 $("p:eq(0)").html(js_receive.content);
             }
         };
-        xhttp.open("POST", "http://localhost:8888/Contract/contractDetailServlet", true);
+        xhttp.open("POST", "http://localhost:8080/Contract/contractDetailServlet", true);
         xhttp.send(JSON.stringify(js_send));
 
     })

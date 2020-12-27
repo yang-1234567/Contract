@@ -1,5 +1,7 @@
 package com.contract.web;
 
+import com.contract.database.Customer;
+import com.contract.database.CustomerDAO;
 import com.contract.utils.myUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,10 +34,20 @@ public class UpdateCustomerServlet extends HttpServlet {
         String email = (String) jsonObject.get("email");
         String bankName = (String) jsonObject.get("bankName");
         String bankAccount = (String) jsonObject.get("bankAccount");
-        String append = (String) jsonObject.get("append");
+
+        Customer customer = CustomerDAO.getCustomer(id);
+        customer.setName(name);
+        customer.setAddress(address);
+        customer.setTel(phone);
+        customer.setFax(fax);
+        customer.setCode(email);
+        customer.setBank(bankName);
+        customer.setAccount(bankAccount);
+
+        boolean flag = CustomerDAO.UpdateCustomer(customer);
 
         JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("result","");
+        jsonObject1.put("result",flag ? 1 : 0);
         resp.setCharacterEncoding("UTF-8");
         PrintWriter writer = resp.getWriter();
         writer.write(jsonObject1.toJSONString());

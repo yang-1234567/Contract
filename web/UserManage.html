@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <base href="http://localhost:8888/Contract/">
+    <base href="http://localhost:8080/Contract/">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
     <!--[if IE 7]>
@@ -108,7 +108,7 @@
                     }
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchUserServlet", true);
+            xhttp.open("POST", "http://localhost:8080/Contract/searchUserServlet", true);
             xhttp.send();
         }
 
@@ -125,7 +125,7 @@
                     }
                 }
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAllRoleServlet", true);
+            xhttp.open("POST", "http://localhost:8080/Contract/searchAllRoleServlet", true);
             xhttp.send();
         }
 
@@ -186,7 +186,7 @@
                                 }
                             }
                         };
-                        xhttp.open("POST", "http://localhost:8888/Contract/addNewUserServlet", true);
+                        xhttp.open("POST", "http://localhost:8080/Contract/addNewUserServlet", true);
                         xhttp.send(JSON.stringify(js_send));
 
                     }
@@ -228,7 +228,7 @@
                             }
                         }
                     };
-                    xhttp.open("POST", "http://localhost:8888/Contract/deleteUserServlet", true);
+                    xhttp.open("POST", "http://localhost:8080/Contract/deleteUserServlet", true);
                     xhttp.send(JSON.stringify(js_send));
 
                 }
@@ -294,7 +294,7 @@
                                         }
                                     }
                                 };
-                                xhttp.open("POST", "http://localhost:8888/Contract/updateUserServlet", true);
+                                xhttp.open("POST", "http://localhost:8080/Contract/updateUserServlet", true);
                                 xhttp.send(JSON.stringify(js_send));
 
                             }
@@ -304,7 +304,7 @@
                     });
                 }
             }
-            xhttp.open("POST", "http://localhost:8888/Contract/searchUserInformationServlet", true);
+            xhttp.open("POST", "http://localhost:8080/Contract/searchUserInformationServlet", true);
             xhttp.send(JSON.stringify(js_send));
 
 

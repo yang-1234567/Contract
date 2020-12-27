@@ -11,10 +11,9 @@ public class Conn {
         Connection conn = null;
         try {
         Class.forName("oracle.jdbc.driver.OracleDriver"); //�������ݿ�����
-        System.out.println("���ݿ��������سɹ���");    //�������Ϣ
         String url = "jdbc:oracle:thin:@localhost:1521/orcl";    //��ȡ����URL
-        String user = "C##YYL"; //�����û���
-        String password = "123456"; //��������
+        String user = "c##ouyyyang"; //�����û���
+        String password = "926997"; //��������
         conn = DriverManager.getConnection(url, user, password); //��ȡ���ݿ�����
         if (conn != null) {
         System.out.println("�ɹ�����Oracle���ݿ⽨�����ӣ���");

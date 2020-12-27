@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <base href="http://localhost:8888/Contract/">
+    <base href="http://localhost:8080/Contract/">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
     <!--[if IE 7]>
@@ -39,11 +39,6 @@
                                                              id="bankAccount"/><i style="color:#F60; ">*</i>
             </li>
         </ul>
-    </div>
-
-    <div class="Tips_content" style="margin-left: 30px">
-        <h3><label>备注：</label></h3>
-        <textarea name="备注" class="finalize" cols="" rows="" style=" width:90%; height:120px"></textarea>
     </div>
 </div>
 
@@ -133,7 +128,7 @@
                 }
 
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAllCustomerServlet", true);
+            xhttp.open("POST", "http://localhost:8080/Contract/searchAllCustomerServlet", true);
             xhttp.send(JSON.stringify(js_send));
 
         }
@@ -165,7 +160,6 @@
             $(".add:eq(4)").val();
             $(".add:eq(5)").val();
             $(".add:eq(6)").val();
-            $(".finalize:eq(0)").val();
 
             layer.open({
                 type: 1,
@@ -197,7 +191,6 @@
                             "email": $(".add:eq(4)").val(),
                             "bankName": $(".add:eq(5)").val(),
                             "bankAccount": $(".add:eq(6)").val(),
-                            "append": $(".finalize:eq(0)").val(),
                         }
                         let xhttp = new XMLHttpRequest();
                         xhttp.onreadystatechange = function () {
@@ -215,7 +208,7 @@
                             }
 
                         };
-                        xhttp.open("POST", "http://localhost:8888/Contract/addNewCustomerServlet", true);
+                        xhttp.open("POST", "http://localhost:8080/Contract/addNewCustomerServlet", true);
                         xhttp.send(JSON.stringify(js_send));
                     }
                 }
@@ -254,7 +247,7 @@
                         }
 
                     };
-                    xhttp.open("POST", "http://localhost:8888/Contract/deleteCustomerServlet", true);
+                    xhttp.open("POST", "http://localhost:8080/Contract/deleteCustomerServlet", true);
                     xhttp.send(JSON.stringify(js_send));
                 }
             });
@@ -271,14 +264,13 @@
                 if (this.readyState === 4 && this.status === 200) {
                     let js_receive = JSON.parse(this.responseText);
                     //查询客户信息
-                    $(".add:eq(0)").val();
-                    $(".add:eq(1)").val();
-                    $(".add:eq(2)").val();
-                    $(".add:eq(3)").val();
-                    $(".add:eq(4)").val();
-                    $(".add:eq(5)").val();
-                    $(".add:eq(6)").val();
-                    $(".finalize:eq(0)").val();
+                    $(".add:eq(0)").val(js_receive.name);
+                    $(".add:eq(1)").val(js_receive.phone);
+                    $(".add:eq(2)").val(js_receive.address);
+                    $(".add:eq(3)").val(js_receive.fax);
+                    $(".add:eq(4)").val(js_receive.email);
+                    $(".add:eq(5)").val(js_receive.bankName);
+                    $(".add:eq(6)").val(js_receive.bankAccount);
                     layer.open({
                         type: 1,
                         title: '修改客户信息',
@@ -304,31 +296,30 @@
                                     "operator": getCookie('curUsername'),
                                     "id": id,
                                     "name": $(".add:eq(0)").val(),
-                                    "address": $(".add:eq(1)").val(),
-                                    "phone": $(".add:eq(2)").val(),
+                                    "address": $(".add:eq(2)").val(),
+                                    "phone": $(".add:eq(1)").val(),
                                     "fax": $(".add:eq(3)").val(),
                                     "email": $(".add:eq(4)").val(),
                                     "bankName": $(".add:eq(5)").val(),
                                     "bankAccount": $(".add:eq(6)").val(),
-                                    "append": $(".finalize:eq(0)").val(),
                                 }
                                 let xhttp = new XMLHttpRequest();
                                 xhttp.onreadystatechange = function () {
                                     if (this.readyState === 4 && this.status === 200) {
                                         let js_receive = JSON.parse(this.responseText);
-                                        if (js_receive.result === '1') {
+                                        if (js_receive.result === 1) {
                                             layer.alert('修改成功！', {
                                                 title: '提示框',
                                                 icon: 1,
                                             });
                                             layer.close(index);
                                         } else {
-                                            layer.alert("添加失败");
+                                            layer.alert("修改失败");
                                         }
                                     }
 
                                 };
-                                xhttp.open("POST", "http://localhost:8888/Contract/updateCustomerServlet", true);
+                                xhttp.open("POST", "http://localhost:8080/Contract/updateCustomerServlet", true);
                                 xhttp.send(JSON.stringify(js_send));
                             }
 
@@ -337,7 +328,7 @@
                 }
 
             };
-            xhttp.open("POST", "http://localhost:8888/Contract/searchAssignServlet", true);
+            xhttp.open("POST", "http://localhost:8080/Contract/searchCustomerServlet", true);
             xhttp.send(JSON.stringify(js_send));
         });
     })

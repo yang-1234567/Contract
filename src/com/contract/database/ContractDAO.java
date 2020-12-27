@@ -174,6 +174,7 @@ public class ContractDAO {
 			  while(rs.next())
 			  {  //ѭ�����������
 				  Contract temp = new Contract(rs.getString("num"),rs.getString("name"),rs.getString("user_id"),rs.getString("customer"),rs.getString("content"),rs.getDate("beginTime"),rs.getDate("endTime"),rs.getInt("del"));
+				  System.out.println(temp);
 				  list.add(temp);
 			  }
 		  } catch (Exception e) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" http-equiv="Pragma" content="Cache-control">
     <title>合同管理系统 </title>
-    <base href="http://localhost:8888/Contract/">
+    <base href="http://localhost:8080/Contract/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
@@ -427,7 +427,7 @@
                                 }
                             }
                         };
-                        xhttp.open("POST", "http://localhost:8888/Contract/updateUserServlet", true);
+                        xhttp.open("POST", "http://localhost:8080/Contract/updateUserServlet", true);
                         xhttp.send(JSON.stringify(js_send));
                     }
                 }

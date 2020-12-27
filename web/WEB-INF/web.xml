@@ -320,5 +320,14 @@
         <url-pattern>/dinggaoServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SearchCustomerServlet</servlet-name>
+        <servlet-class>com.contract.web.SearchCustomerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchCustomerServlet</servlet-name>
+        <url-pattern>/searchCustomerServlet</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

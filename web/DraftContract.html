@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <base href="http://localhost:8888/Contract/">
+    <base href="http://localhost:8080/Contract/">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
     <!--[if IE 7]>
@@ -17,7 +17,7 @@
 
 <body>
 <div class="page-content">
-    <form action="http://localhost:8888/Contract/fileUploadServlet" method="post" enctype="multipart/form-data"
+    <form action="http://localhost:8080/Contract/fileUploadServlet" method="post" enctype="multipart/form-data"
           onsubmit="return click1(this)" id="form2">
         <input type="hidden" name="username" value=""/>
         <div class="Manager_style">
@@ -29,10 +29,10 @@
                     <li><label class="label_name">合同名称</label><input name="contract_name" type="text" class="text"
                                                                      style=" width:200px; "/></li>
                     <li><label class="label_name">客户</label>
-                        <select id="customer">
+                        <select id="customer" name="customerName">
                             <option selected value="">--请选择--</option>
                         </select>
-                        <input name="customer" type="hidden" class="text"
+                        <input id="hiddenCustomer" name="customer" type="hidden" class="text"
                                         style=" width:200px; "/></li>
                     <li><label class="label_name">开始时间</label> <input name="starttime" class="inline laydate-icon"
                                                                       id="start"
@@ -83,11 +83,12 @@
     });
 
     function click1(form) {
-        form.customer.value = $('#customer').val();
+        $("#hiddenCustomer").val($('#customer').val()) ;
+        $("input:eq(0)").val(getCookie("curUsername"));
         if (form.contract_name.value === "") {
             layer.alert("请输入合同名称");
             return false;
-        } else if (form.customer.value === "") {
+        } else if ($('#customer').val() === "") {
             layer.alert("请输入客户名称");
             return false;
         }else if (form.starttime.value === "") {
@@ -99,7 +100,7 @@
         }else if (form.starttime.value > form.endtime.value) {
             layer.alert("结束时间不得早于开始时间");
             return false;
-        }else if (form.customer.value === "") {
+        }else if (form.attachment.value === "") {
             layer.alert("请上传附件");
             return false;
         }else if (form.content.value === "") {
@@ -107,13 +108,15 @@
             return false;
         }
 
-        $("input:eq(0)").val(getCookie("curUsername"));
+
         return true;
     }
 
     /***判断用户添加文本**/
     $(document).ready(function () {
-
+        let js_send={
+            "keyword":""
+        }
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
@@ -125,7 +128,7 @@
                 }
             }
         };
-        xhttp.open("POST", "http://localhost:8888/Contract/searchAllCustomerServlet", true);
+        xhttp.open("POST", "http://localhost:8080/Contract/searchAllCustomerServlet", true);
         xhttp.send(JSON.stringify(js_send));
 
         $("#submit").click(function () {

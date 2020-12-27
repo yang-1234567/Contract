@@ -99,6 +99,7 @@ public class ConstractProDAO {
 	    conn=Conn.getconn();
 	    try {
 	        st=conn.createStatement();
+			System.out.println(con);
 	        String sql="update \"contract_process\" set \"state\" = "+con.getState()+","+
 					"\"content\" = '"+con.getContent()+"',"+
 					"\"time\" = "+"to_timestamp('"+con.getTime()+"','yyyy-mm-dd hh24:mi:ss.ff')"+

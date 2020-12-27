@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <base href="http://localhost:8888/Contract/">
+    <base href="http://localhost:8080/Contract/">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/font-awesome.min.css"/>
     <!--[if IE 7]>
@@ -17,8 +17,9 @@
 
 <body>
 <div class="page-content">
-    <form action="http://localhost:8888/Contract/fileUploadServlet" method="post" enctype="multipart/form-data" onsubmit="return click1(this)" id="form2">
-        <input type="hidden" name = "username" value=""/>
+    <form action="http://localhost:8080/Contract/fileUploadServlet" method="post" enctype="multipart/form-data"
+          onsubmit="return click1(this)" id="form2">
+        <input type="hidden" name="username" value=""/>
         <div class="Manager_style">
             <span class="title_name">起草合同</span>
 
@@ -27,13 +28,20 @@
 
                     <li><label class="label_name">合同名称</label><input name="contract_name" type="text" class="text"
                                                                      style=" width:200px; "/></li>
-                    <li><label class="label_name">客户</label><input name="customer" type="text" class="text"
-                                                                   style=" width:200px; "/></li>
-                    <li><label class="label_name">开始时间</label> <input name="starttime" class="inline laydate-icon" id="start"
+                    <li><label class="label_name">客户</label>
+                        <select id="customer" name="customerName">
+                            <option selected value="">--请选择--</option>
+                        </select>
+                        <input id="hiddenCustomer" name="customer" type="hidden" class="text"
+                                        style=" width:200px; "/></li>
+                    <li><label class="label_name">开始时间</label> <input name="starttime" class="inline laydate-icon"
+                                                                      id="start"
                                                                       style="width:200px; margin-left:10px"/></li>
-                    <li><label class="label_name">结束时间</label><input name="endtime" class="inline laydate-icon" id="time1"
+                    <li><label class="label_name">结束时间</label><input name="endtime" class="inline laydate-icon"
+                                                                     id="time1"
                                                                      style="width:200px; margin-left:10px"/></li>
-                    <li><label class="label_name">附件</label><input name="attachment" class="inline" type="file" id="file"
+                    <li><label class="label_name">附件</label><input name="attachment" class="inline" type="file"
+                                                                   id="file"
                                                                    style="width:200px; margin-left:10px"/>
                     </li>
                 </ul>
@@ -42,12 +50,13 @@
             <div class="Tips_content" style="margin-left: 30px">
                 <h3><label>合同内容：</label></h3>
                 <label>
-                    <textarea name="contract_content" cols="" rows="" style=" width:400px; height:220px" form="form2"></textarea>
+                    <textarea name="contract_content" cols="" rows="" style=" width:400px; height:220px"
+                              form="form2"></textarea>
                 </label>
             </div>
         </div>
         <div class="btn_operating">
-            <input type="submit" class = "btn btn-primary"  value="提交"/>
+            <input type="submit" class="btn btn-primary" value="提交"/>
             <button id="reset" class="btn" type="button">重置</button>
         </div>
     </form>
@@ -74,20 +83,53 @@
     });
 
     function click1(form) {
-        if (form.contract_name.value === ""){
+        $("#hiddenCustomer").val($('#customer').val()) ;
+        $("input:eq(0)").val(getCookie("curUsername"));
+        if (form.contract_name.value === "") {
             layer.alert("请输入合同名称");
-            return  false;
-        } else if (form.customer.value === ""){
+            return false;
+        } else if ($('#customer').val() === "") {
             layer.alert("请输入客户名称");
-            return  false;
+            return false;
+        }else if (form.starttime.value === "") {
+            layer.alert("请输入开始时间名称");
+            return false;
+        }else if (form.endtime.value === "") {
+            layer.alert("请输入结束时间名称");
+            return false;
+        }else if (form.starttime.value > form.endtime.value) {
+            layer.alert("结束时间不得早于开始时间");
+            return false;
+        }else if (form.attachment.value === "") {
+            layer.alert("请上传附件");
+            return false;
+        }else if (form.content.value === "") {
+            layer.alert("请输入合同内容");
+            return false;
         }
 
-        $("input:eq(0)").val(getCookie("curUsername"));
-       return true;
+
+        return true;
     }
 
     /***判断用户添加文本**/
     $(document).ready(function () {
+        let js_send={
+            "keyword":""
+        }
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let js_receive = JSON.parse(this.responseText);
+                let customers = js_receive.names.split(' ');
+                for(let i=0;i<customers.length;i++){
+                    let str='<option>'+customers[i]+'</option>';
+                    $('#customer').append(str);
+                }
+            }
+        };
+        xhttp.open("POST", "http://localhost:8080/Contract/searchAllCustomerServlet", true);
+        xhttp.send(JSON.stringify(js_send));
 
         $("#submit").click(function () {
             // var num=0;
@@ -131,28 +173,10 @@
                     "contractContent": contractContent
                 }
 
-                // let xhttp = new XMLHttpRequest();
-                // xhttp.onreadystatechange = function () {
-                //     if (this.readyState === 4 && this.status === 200) {
-                //         let js_receive = JSON.parse(this.responseText);
-                //         if (js_receive.result === '1') {
-                //             layer.alert("起草成功");
-                //             $("input,select,textarea").each(function (n) {
-                //                 $(this).val("");
-                //             });
-                //             return true;
-                //         } else {
-                //             layer.alert("起草失败");
-                //             return false;
-                //         }
-                //     }
-                // };
-                // xhttp.open("POST", "http://localhost:8888/Contract/draftServlet", true);
-                // xhttp.send(JSON.stringify(js_send));
+
 
             }
         });
-
 
 
         $("#reset").click(function () {
@@ -162,7 +186,6 @@
             });
         });
     });
-
 
 
 </script>
